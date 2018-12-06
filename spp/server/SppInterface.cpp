@@ -1,4 +1,4 @@
-#include <core/server/spp/SppSeverMgr.h>
+#include <spp/server/SppServerMgr.h>
 
 using namespace TITANS::SERVER;
 
@@ -10,7 +10,7 @@ using namespace TITANS::SERVER;
  */
 extern "C" int spp_handle_init(void* arg1, void* arg2) {
 
-    return sSppServerMgr::Instance().GetServerImpl()->HandleSppInitCB(arg1, arg2);
+    return sSppServerMgr::Instance()->GetSppServerImpl()->HandleSppInitCB(arg1, arg2);
 }
 
 /**
@@ -24,7 +24,7 @@ extern "C" int spp_handle_init(void* arg1, void* arg2) {
  */
 extern "C" int spp_handle_input(unsigned flow, void* arg1, void* arg2) {
     
-    return sSppServerMgr::Instance().GetServerImpl()->HandleSppInputCB(flow, arg1, arg2);
+    return sSppServerMgr::Instance()->GetSppServerImpl()->HandleSppInputCB(flow, arg1, arg2);
 }
 
 /**
@@ -36,7 +36,7 @@ extern "C" int spp_handle_input(unsigned flow, void* arg1, void* arg2) {
  */
 extern "C" int spp_handle_route(unsigned flow, void* arg1, void* arg2) {
 
-    return sSppServerMgr::Instance().GetServerImpl()->HandleSppRouteCB(flow, arg1, arg2);
+    return sSppServerMgr::Instance()->GetSppServerImpl()->HandleSppRouteCB(flow, arg1, arg2);
 }
 
 /**
@@ -48,7 +48,7 @@ extern "C" int spp_handle_route(unsigned flow, void* arg1, void* arg2) {
  */
 extern "C" int spp_handle_process(unsigned flow, void* arg1, void* arg2) {
 
-    return sSppServerMgr::Instance().GetServerImpl()->HandleSppProcessCB(flow, arg1, arg2);
+    return sSppServerMgr::Instance()->GetSppServerImpl()->HandleSppProcessCB(flow, arg1, arg2);
 }
 
 /**
@@ -59,5 +59,5 @@ extern "C" int spp_handle_process(unsigned flow, void* arg1, void* arg2) {
  */
 extern "C" void spp_handle_fini(void* arg1, void* arg2) {
 
-    return sSppServerMgr::Instance().GetServerImpl()->HandleSppFiniCB(arg1, arg2);    
+    return sSppServerMgr::Instance()->GetSppServerImpl()->HandleSppFiniCB(arg1, arg2);    
 }

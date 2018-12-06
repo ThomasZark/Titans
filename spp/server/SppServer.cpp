@@ -4,7 +4,7 @@
 #include <arpa/inet.h>
 
 #include <core/plugin/PluginMgr.h>
-#include <core/server/spp/SppServer.h>
+#include <spp/server/SppServer.h>
 
 using namespace TITANS::SERVER;
 using namespace TITANS::HANDLER;
@@ -23,15 +23,15 @@ int SppServer::Initialize(struct stBaseSvrContext* pContext) {
     stSppSvrContext* pSppSvrContext = static_cast<stSppSvrContext*>(pContext);
     CServerBase* base = static_cast<CServerBase*>(pSppSvrContext->arg2);
 
-    int ret = sPluginMgr::Instance().Initialize(pSppSvrContext->arg1, pSppSvrContext->arg2);
-    base->log_.LOG_P_PID(LOG_ERROR, "Plugin Init ret=%d, info=%s\n", ret, sPluginMgr::Instance().GetLogInfo().c_str());
+    int ret = sPluginMgr::Instance()->Initialize(pSppSvrContext->arg1, pSppSvrContext->arg2);
+    base->log_.LOG_P_PID(LOG_ERROR, "Plugin Init ret=%d, info=%s\n", ret, sPluginMgr::Instance()->GetLogInfo().c_str());
     return ret;
 }
 
 void SppServer::Finalize(struct stBaseSvrContext* pContext) {
 
     stSppSvrContext* pSppSvrContext = static_cast<stSppSvrContext*>(pContext);
-    sPluginMgr::Instance().Finalize(pSppSvrContext->arg1, pSppSvrContext->arg2);
+    sPluginMgr::Instance()->Finalize(pSppSvrContext->arg1, pSppSvrContext->arg2);
 }
 
 int SppServer::Serve(struct stBaseSvrContext* pContext) {
@@ -66,7 +66,7 @@ int SppServer::HandleSppInputCB(unsigned flow, void* arg1, void* arg2) {
                      inet_ntoa(*(struct in_addr*)&extinfo->remoteip_),
                      format_time(extinfo->recvtime_));
    
-    struct stBaseHandlerContext context = {arg1, arg2, static_cast<void*>(&flow)}
+    struct stBaseHandlerContext context = {arg1, arg2, static_cast<void*>(&flow)};
     return GetHandler()->HandleInput(&context);
 }
 
@@ -79,9 +79,7 @@ int SppServer::HandleSppProcessCB(unsigned flow, void* arg1, void* arg2) {
 
     blob_type   * blob    = (blob_type*)arg1;
     TConnExtInfo* extinfo = (TConnExtInfo*)blob->extdata;
-
     CServerBase* base  = (CServerBase*)arg2;
-    CTCommu    * commu = (CTCommu*)blob->owner;
 
     base->log_.LOG_P_PID(LOG_DEBUG, "spp_handle_process, %d, %d, %s, %s\n",
                          flow,
@@ -89,7 +87,7 @@ int SppServer::HandleSppProcessCB(unsigned flow, void* arg1, void* arg2) {
                          inet_ntoa(*(struct in_addr*)&extinfo->remoteip_),
                          format_time(extinfo->recvtime_));
     try{
-        struct stBaseHandlerContext context = {arg1, arg2, static_cast<void*>(&flow)}
+        struct stBaseHandlerContext context = {arg1, arg2, static_cast<void*>(&flow)};
         int ret = GetHandler()->HandleProcess(&context);
         if(ret != 0) {
             base->log_.LOG_P_PID(LOG_ERROR, "HandleProcess failed ret=%d\n", ret);

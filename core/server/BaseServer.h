@@ -52,7 +52,7 @@ public:
     //  pBaseHandler    - 处理器
     //@return
     //  BaseServer*     - 服务指针
-    virtual BaseServer* SetHandler(BaseHandler* pHandler) { 
+    virtual BaseServer* SetHandler(HANDLER::BaseHandler* pHandler) { 
         _pHandler = pHandler;
         return this;
     }
@@ -61,7 +61,7 @@ public:
     //@param
     //@return
     //  BaseHandler*     - 服务处理器指针
-    virtual BaseHandler* GetHandler() { 
+    virtual HANDLER::BaseHandler* GetHandler() { 
         return _pHandler; 
     }
 
@@ -84,7 +84,7 @@ public:
     }
 
 protected:
-    BaseHandler* _pHandler;
+    HANDLER::BaseHandler* _pHandler;
     std::string _name;
 };
 

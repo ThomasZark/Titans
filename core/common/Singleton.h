@@ -1,5 +1,7 @@
-#ifndef _TITANS_CORE_COMMON_SINGLETON_H_
-#define _TITANS_CORE_COMMON_SINGLETON_H_
+#ifndef _TITANS_CORE_COMMON_Singleton_H_
+#define _TITANS_CORE_COMMON_Singleton_H_
+
+#include <cstddef>
 
 namespace TITANS {
 
@@ -28,7 +30,7 @@ public:
 };
 
 
-template < class T, template<class> class CreatePolicy = CreateNew > class  SingleTon
+template < class T, template<class> class CreatePolicy = CreateNew > class  Singleton
 {
 public:
 
@@ -53,19 +55,19 @@ public:
     static T*  Instance_;
     static T*  ProtoInstance_;
 private:
-    SingleTon(void);
-    SingleTon(const SingleTon&);
-    SingleTon& operator= (const SingleTon&);
+    Singleton(void);
+    Singleton(const Singleton&);
+    Singleton& operator= (const Singleton&);
 };
 
 
 template <class T, template <class> class CreationPolicy>
-T* SingleTon <T, CreationPolicy >::Instance_ = NULL;
+T* Singleton <T, CreationPolicy >::Instance_ = NULL;
 
 template <class T, template <class> class CreationPolicy>
-T* SingleTon <T, CreationPolicy >::ProtoInstance_ = NULL;
+T* Singleton <T, CreationPolicy >::ProtoInstance_ = NULL;
 
 }//namespace TITANS
 
 
-#endif //_TITANS_CORE_COMMON_SINGLETON_H_
+#endif //_TITANS_CORE_COMMON_Singleton_H_

@@ -1,5 +1,5 @@
-#ifndef _TITANS_CORE_SERVER_SPP_SPPSERVER_H_
-#define _TITANS_CORE_SERVER_SPP_SPPSERVER_H_
+#ifndef _TITANS_SPP_SERVER_SPPSERVER_H_
+#define _TITANS_SPP_SERVER_SPPSERVER_H_
 
 #include <core/common/Singleton.h>
 #include <core/server/BaseServer.h>
@@ -9,11 +9,18 @@ namespace TITANS {
 namespace SERVER {
 
 struct stSppSvrContext: public stBaseSvrContext {
+
+    stSppSvrContext(void* pArg1, void* pArg2)
+    :arg1(pArg1), arg2(pArg2) {}
+    
     void* arg1;
     void* arg2;
 };
 
-class SppServer: public BaseSever {
+//SppSever 封装了spp的接口函数
+//spp的接口函数分别被proxy进程，worker进程调用
+//SppSever 成员变量慎用，跨进程失效
+class SppServer: public BaseServer {
 
 public:
     SppServer();
@@ -84,4 +91,4 @@ public:
 
 }//namespace TITANS
 
-#endif //_TITANS_CORE_SERVER_SPP_SPPSERVER_H_
+#endif //_TITANS_SPP_SERVER_SPPSERVER_H_

@@ -47,7 +47,9 @@ public:
     //@param
     //  pContext    - 初始化参数
     //@return
-    virtual int HandleProcess(struct stBaseHandlerContext* pContext) {};
+    virtual int HandleProcess(struct stBaseHandlerContext* pContext) {
+        return 0;
+    };
 };
 
 } //namespace HANDLER
