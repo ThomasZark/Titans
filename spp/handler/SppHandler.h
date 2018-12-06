@@ -19,7 +19,7 @@ public:
     virtual int HandleInput(struct stBaseHandlerContext* pContext) {
 
         blob_type* blob = static_cast<blob_type*>(pContext->arg1);
-        return _codec.InputCheck(blob->data, blob->len, NULL);
+        return _codec.ReqPkgCheck(blob->data, blob->len, NULL);
     }
 
     virtual SppHandler<CODEC>* SetHandleTimeout(unsigned int timeout) {
