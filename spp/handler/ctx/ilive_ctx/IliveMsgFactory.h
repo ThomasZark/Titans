@@ -1,17 +1,25 @@
-#ifndef _TITANS_CORE_HANDLER_CTX_FACTORY_H_
-#define _TITANS_CORE_HANDLER_CTX_FACTORY_H_
+#ifndef _TITANS_SPP_HANDLER_CTX_ILIVE_CTX_ILIVEMSGFATORY_H_
+#define _TITANS_SPP_HANDLER_CTX_ILIVE_CTX_ILIVEMSGFATORY_H_
+
+#include <functional>
+#include <spp/handler/ctx/ilive_ctx/IliveMsg.h>
 
 namespace TITANS {
 
 namespace HANDLER {
 
-template<typename HEADREQ, typename HEADRSP>
-class Factory {
+typedef std::function<TITANS::HANDLER::IliveMsg* (void)> IliveMsgCreateFunc;
 
-public: 
-    Factory() {}
+class IliveMsgFactory{
 
-    virtual ~Factory() {}
+public:
+
+    virtual ~IliveMsgFactory() {}
+
+    static IliveMsgFactory* Instance() {
+        static IliveMsgFactory obj;
+        return &obj;
+    }
 
     //@desc -初始化 
     //@param
@@ -38,10 +46,9 @@ public:
 
         MONITOR_API(MONITOR_ALL); //总请求
 
-        std::shared_ptr<Context<HEADREQ, HEADRSP>> = std::make_shared<Context<HEADREQ, HEADRSP>>();
-        pCtx->SetReqPkg(data, size);
+        IliveCtxPtr pCtx = std::make_shared<IliveContext>();
 
-        int ret = pCtx->ReqPkgDecode();
+        int ret = pCtx->ReqPkgDecode(data, size, NULL);
         if (0 != ret) {
             MONITOR_API(MONITOR_DECODE_REQ_FAILED);//解包失败
             MONITOR_API(MONITOR_FAILED);//总失败量
@@ -61,7 +68,7 @@ public:
         SF_LOG(LOG_DEBUG, "subcmd=%d|uin=%zu|seq=%d|client_ip=%u", 
             pCtx->HeadReq().subcmd(), pCtx->HeadReq().uid(), pCtx->HeadReq().seq(), pCtx->HeadReq().client_ip());
 
-        auto subcmd = pCtx->q().subcmd();
+        auto subcmd = pCtx->HeadReq().subcmd();
         auto iter = m_msg_func.find(subcmd);
         if(iter == m_msg_func.end()) { 
             //never got here
@@ -111,11 +118,17 @@ private:
     void MONITOR_API(uint32_t type) {
         Attr_API(ATTR + type, 1);
     }
-};
 
+    IliveMsgFactory(){}
+
+    IliveMsgFactory(const IliveMsgFactory&);
+
+    IliveMsgFactory& operator=(const IliveMsgFactory&);
+};
 
 } //namespace HANDLER
 
 } //namespace TITANS
 
-#endif //_TITANS_CORE_HANDLER_CTX_FACTORY_H_
+
+#endif //_TITANS_SPP_HANDLER_CTX_ILIVE_CTX_ILIVEMSGFATORY_H_

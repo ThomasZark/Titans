@@ -14,15 +14,34 @@ public:
 
     virtual ~BaseCodec() {}
 
-    virtual int Encode(std::string& strData) {
+    //@desc - 回包打包
+    //@param
+    //  strData  - 打包后数据
+    //@return
+    // int   - 0 成功
+    virtual int RspPkgEncode(std::string& strData) {
         return 0;
     }
 
-    virtual int Decode(const char* pData, const unsigned int len, void* pExt) {
+    //@desc - 请求包解包
+    //@param
+    //  pData   - 请求包数据
+    //  len     - 请求包长度
+    //  pExt    - 扩充参数
+    //@return
+    // int   - 0 成功
+    virtual int ReqPkgDecode(const char* pData, const unsigned int len, void* pExt) {
         return 0;
     }
 
-    virtual int InputCheck(const char* pData, const unsigned int len, void* pExt) {
+    //@desc - 请求包合法性检查
+    //@param
+    //  pData   - 请求包数据
+    //  len     - 请求包长度
+    //  pExt    - 扩充参数
+    //@return
+    // int   - 0 成功
+    virtual int ReqPkgCheck(const char* pData, const unsigned int len, void* pExt) {
         return 0;
     }
 };
