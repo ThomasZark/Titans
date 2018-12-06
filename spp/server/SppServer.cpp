@@ -25,12 +25,25 @@ int SppServer::Initialize(struct stBaseSvrContext* pContext) {
 
     int ret = sPluginMgr::Instance()->Initialize(pSppSvrContext->arg1, pSppSvrContext->arg2);
     base->log_.LOG_P_PID(LOG_ERROR, "Plugin Init ret=%d, info=%s\n", ret, sPluginMgr::Instance()->GetLogInfo().c_str());
-    return ret;
+    if(ret != 0) {
+        return ret;
+    }
+
+    struct stBaseHandlerContext context = {pSppSvrContext->arg1, pSppSvrContext->arg2, NULL};
+    ret = GetHandler()->Initialize(&context);
+    if(ret != 0) {
+        base->log_.LOG_P_PID(LOG_ERROR, "Handler Init error ret=%d\n", ret);
+        return ret;
+    }
+    return 0;
 }
 
 void SppServer::Finalize(struct stBaseSvrContext* pContext) {
 
-    stSppSvrContext* pSppSvrContext = static_cast<stSppSvrContext*>(pContext);
+    struct stSppSvrContext* pSppSvrContext = static_cast<stSppSvrContext*>(pContext);
+    struct stBaseHandlerContext handlerContext = {pSppSvrContext->arg1, pSppSvrContext->arg2, NULL};
+    
+    GetHandler()->Finalize(&handlerContext);
     sPluginMgr::Instance()->Finalize(pSppSvrContext->arg1, pSppSvrContext->arg2);
 }
 
@@ -105,8 +118,8 @@ void SppServer::HandleSppFiniCB(void* arg1, void* arg2) {
     CServerBase* base = (CServerBase*)arg2;
     base->log_.LOG_P(LOG_DEBUG, "spp_handle_fini\n");
 
-    struct stSppSvrContext context = {arg1, arg2};
-    Finalize(&context);
+    struct stSppSvrContext serverContext = {arg1, arg2};
+    Finalize(&serverContext);
 }
 
 char * SppServer::format_time( time_t tm) {

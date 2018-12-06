@@ -23,7 +23,7 @@ public:
     //  pContext    - 初始化参数
     //@return
     //  int     - 0 成功
-    virtual int Initialize(struct stBaseSvrContext* pContext) { 
+    virtual int Initialize(struct stBaseHandlerContext* pContext) { 
         return 0; 
     }
 
@@ -31,7 +31,7 @@ public:
     //@param
     //  pContext    - 初始化参数
     //@return
-    virtual void Finalize(struct stBaseSvrContext* pContext) { 
+    virtual void Finalize(struct stBaseHandlerContext* pContext) { 
         return; 
     }
 
