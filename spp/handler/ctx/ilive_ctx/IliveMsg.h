@@ -23,6 +23,7 @@ public:
         m_retcode = 0;
         m_send_reply = false;
     }
+
     virtual ~IliveMsg() {}
 
     //@desc - 消息初始化
@@ -55,6 +56,9 @@ public:
             //包体解包
             ret = Decode();
             if(ret != 0) {
+                MONITOR_API(MONITOR_DECODE_REQ_FAILED); //请求包错误
+                SF_LOG(LOG_ERROR, "decode request failed|subcmd=%d|uin=%zu|client_ip=%u|",
+                    HeadReq().subcmd(), HeadReq().uid(), HeadReq().client_ip());
                 SetRetcode(ret);
                 break;
             }
@@ -69,6 +73,9 @@ public:
             //包体打包
             ret = Encode();
             if(ret != 0) {
+                MONITOR_API(MONITOR_ENCODE_RSP_FAILED); // encode响应错误
+                SF_LOG(LOG_ERROR, "encode request failed|subcmd=%d|uin=%zu|", 
+                    HeadReq().subcmd(), HeadReq().uid());
                 SetRetcode(ret);
                 break;
             }
@@ -122,13 +129,17 @@ protected:
     //@param
     //@return
     // int  - 0 成功
-    virtual int Decode() { return 0; }
+    virtual int Decode() {
+        return _pBodyCodec->ReqPkgDecode(HeadReq().ex().c_str(), HeadReq().ex().size(), NULL);
+    }
 
     //@desc - 包体打包，失败直接回包，返回码写入包头
     //@param
     //@return
     // int  - 0 成功
-    virtual int Encode() { return 0; }
+    virtual int Encode() { 
+        return _pBodyCodec->RspPkgEncode(*(HeadRsp().mutable_ex()));
+    }
 
     //@desc - 消息业务处理函数
     //@param
@@ -196,6 +207,16 @@ protected:
         return;
     }
 
+    //@desc - 设置包体解析器
+    //@param
+    //  codec  - 包体解析器    
+    //@return
+    // void
+    void SetBodyCodec(TITANS::CODEC::BaseCodec* codec) {
+
+        _pBodyCodec = codec;
+    }
+
     void Monitor() {
 
         if (0 == m_retcode) {
@@ -253,7 +274,9 @@ private:
     uint32_t m_logic_Attr;
     int m_retcode;
     bool m_send_reply;
+
     IliveCtxPtr m_pCtx;
+    TITANS::CODEC::BaseCodec* _pBodyCodec;
 };
 
 

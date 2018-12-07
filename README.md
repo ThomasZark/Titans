@@ -6,7 +6,7 @@ Titans是一个基于spp开发的面向后台的rpc开发框架，旨在提高�
 
 ## 目录
 - core， Titans核心部件，提供了Titans核心接口
-- codec，Titans 协议，自定义协议实现标准打包解包接口
+- codec，Titans 协议解析器，自定义协议实现标准打包解包接口
 - spp， Titans 提供基于spp的具体实现
 
 
@@ -32,10 +32,9 @@ SvrInit.cpp
 SppServer* GetServer() {
 
     static SppServer sppServerImpl;
-    static MtHandler<IliveCodec, TestMsg> mt_handler;
+    static MtCtxHandler<IliveCodec, IliveMsgFactory> mt_ctx_handler(TestSvr::TEST_SVR, 0, 2000);
     
-    //绑定处理器，设置服务名称
-    sppServerImpl.SetHandler(&mt_handler)->SetServerName("TestSvr");
+    sppServerImpl.SetHandler(&mt_ctx_handler)->SetServerName("TestSvr");
     return &sppServerImpl;
 }
 
