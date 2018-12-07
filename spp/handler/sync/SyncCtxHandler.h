@@ -1,6 +1,7 @@
 #ifndef _TITANS_SPP_HANDLER_SYNC_SYNCCTXHANDLER_H_
 #define _TITANS_SPP_HANDLER_SYNC_SYNCCTXHANDLER_H_
 
+#include <memory>
 #include <spp/handler/SppHandler.h> 
 
 namespace TITANS {
@@ -8,15 +9,15 @@ namespace TITANS {
 namespace HANDLER {
 
 template<typename CODEC, typename MSG, typename FACTORY>
-class MtCtxHandler: public SppHandler<CODEC> {
+class SyncCtxHandler: public SppHandler<CODEC> {
 
 public:
-    MtCtxHandler(uint32_t svr_cmd, uint32_t attr, unsigned int timeout = 2000)
+    SyncCtxHandler(uint32_t svr_cmd, uint32_t attr, unsigned int timeout = 2000)
     :SppHandler<CODEC>(timeout)
     ,_svrCmd(svr_cmd)
     ,_attr(attr) {};
 
-    virtual ~MtCtxHandler() {};
+    virtual ~SyncCtxHandler() {};
 
     virtual int Initialize(struct stBaseHandlerContext* pContext) {
 
@@ -30,7 +31,7 @@ public:
         CTCommu* commu = static_cast<CTCommu*>(blob->owner);
         
         try {
-            auto msg = std::make_shared<MSG>(FACTORY::Instance()->CreateMsg(blob->data, blob->len));
+            std::shared_ptr<MSG> msg(FACTORY::Instance()->CreateMsg(blob->data, blob->len));
             if(msg != NULL) {
                 msg->SetServerBase(base);
                 msg->SetTCommu(commu);

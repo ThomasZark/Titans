@@ -16,15 +16,14 @@ public:
     virtual ~CtxProtoCodec() {}
 
     virtual int RspPkgEncode(std::string& strData) {
-        if (!_bodyReq.SerializeToString(&strData)) {
+        if (!_bodyRsp.SerializeToString(&strData)) {
             return 4; //ILIVE_EC_INNER_ERROR
         }
         return 0;
     }
 
     virtual int ReqPkgDecode(const char* pData, const unsigned int len, void* pExt) {
-        
-        if (!_bodyRsp.ParseFromArray(pData, len)) {
+        if (!_bodyReq.ParseFromArray(pData, len)) {
             return 1; //ILIVE_EC_REQ_BAD_PKG
         }
         return 0;
