@@ -140,8 +140,8 @@ protected:
 typedef Singleton<PluginMgr> sPluginMgr;
 
 #define CAT(file, line) file##line
-#define REGIST_PLUGIN(sPlugin)    \
-static int CAT(R, __LINE__) = TITANS::PLUGIN::sPluginMgr::Instance()->Regist(#sPlugin, sPlugin::Instance());
+#define REGIST_PLUGIN(Plugin)    \
+static int CAT(R, __LINE__) = TITANS::PLUGIN::sPluginMgr::Instance()->Regist(#Plugin, CAT(s, Plugin)::Instance());
 
 
 } //namespace PLUGIN

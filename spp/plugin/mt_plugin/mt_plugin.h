@@ -1,5 +1,5 @@
-#ifndef _TITANS_SPP_PLUGIN_MTPLUGIN_MT_PLUGIN_H_
-#define _TITANS_SPP_PLUGIN_MTPLUGIN_MT_PLUGIN_H_
+#ifndef _TITANS_SPP_PLUGIN_MT_PLUGIN_MT_PLUGIN_H_
+#define _TITANS_SPP_PLUGIN_MT_PLUGIN_MT_PLUGIN_H_
 
 #include <core/common/Singleton.h>
 #include <core/plugin/Plugin.h>
@@ -27,4 +27,4 @@ typedef Singleton<MtPlugin> sMtPlugin;
 
 }//namespace TITANS
 
-#endif //_TITANS_SPP_PLUGIN_MTPLUGIN_MT_PLUGIN_H_
+#endif //_TITANS_SPP_PLUGIN_MT_PLUGIN_MT_PLUGIN_H_

@@ -35,4 +35,4 @@ void MtPlugin::Finalize(void* arg1, void* arg2) {
     }
 }
 
-REGIST_PLUGIN(sMtPlugin)
+REGIST_PLUGIN(MtPlugin)
