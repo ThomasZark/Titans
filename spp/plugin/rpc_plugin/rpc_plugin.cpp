@@ -13,7 +13,10 @@ RpcPlugin::~RpcPlugin() {
 
 }
 
-int RpcPlugin::Initialize(const char* etc, CServerBase* base) {
+int RpcPlugin::Initialize(void* arg1, void* arg2) {
+
+    char* etc = static_cast<char*>(arg1);
+    CServerBase* base = static_cast<CServerBase*>(arg2);
 
     if (base->servertype() == SERVER_TYPE_WORKER) {
         

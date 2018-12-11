@@ -31,8 +31,8 @@ public:
 
 } //namespace RPC
 
-#define CAT(file, line) file##line
+#define RPC_CAT(file, line) file##line
 #define REGIST_RPC(NAME)    \
-static int CAT(R, __LINE__) = TITANS::PLUGIN::sRpcPlugin::Instance()->Regist(#NAME, TITANS::Singleton<NAME>::Instance());
+static int RPC_CAT(R, __LINE__) = TITANS::PLUGIN::sRpcPlugin::Instance()->Regist(#NAME, TITANS::Singleton<NAME>::Instance());
 
 #endif //_TITANS_SPP_PLUGIN_RPC_PLUGIN_BASESERVICERPC_H_

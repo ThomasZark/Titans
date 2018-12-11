@@ -16,7 +16,7 @@ public:
 
     virtual ~RpcPlugin();
 
-    virtual int Initialize(const char* etc, CServerBase* base);
+    virtual int Initialize(void* arg1, void* arg2);
 
     int Regist(const char* pName, RPC::BaseServiceRpc* pService);
 

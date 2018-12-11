@@ -8,6 +8,7 @@
 
 #include <codec/ctx/CtxCodec.h>
 #include <spp/handler/ctx/ilive_ctx/IliveContext.h>
+#include <spp/handler/ctx/ilive_ctx/IliveLog.h>
 
 namespace TITANS {
 
@@ -57,8 +58,7 @@ public:
             ret = Decode();
             if(ret != 0) {
                 MONITOR_API(MONITOR_DECODE_REQ_FAILED); //请求包错误
-                SF_LOG(LOG_ERROR, "decode request failed|subcmd=%d|uin=%zu|client_ip=%u|",
-                    HeadReq().subcmd(), HeadReq().uid(), HeadReq().client_ip());
+                LLOG(LOG_ERROR, "decode request failed|subcmd=%d|client_ip=%u|", HeadReq().subcmd(), HeadReq().client_ip());
                 SetRetcode(ret);
                 break;
             }
@@ -74,8 +74,7 @@ public:
             ret = Encode();
             if(ret != 0) {
                 MONITOR_API(MONITOR_ENCODE_RSP_FAILED); // encode响应错误
-                SF_LOG(LOG_ERROR, "encode request failed|subcmd=%d|uin=%zu|", 
-                    HeadReq().subcmd(), HeadReq().uid());
+                SF_LOG(LOG_ERROR, "encode request failed|subcmd=%d|", HeadReq().subcmd());
                 SetRetcode(ret);
                 break;
             }
@@ -280,13 +279,13 @@ private:
 };
 
 
-#define REGIST_CAT(file, line) file##line
+#define MSG_CAT(file, line) file##line
 #define REGIST(Type, Msg)    \
     TITANS::HANDLER::IliveMsg* Msg##CreateFunc() { \
         TITANS::HANDLER::IliveMsg* ptr_msg = new Msg(); \
 	    return ptr_msg;	\
     }\
-    static int REGIST_CAT(R, __LINE__) = TITANS::HANDLER::IliveMsgFactory::Instance()->Regist(Type, Msg##CreateFunc);
+    static int MSG_CAT(R, __LINE__) = TITANS::HANDLER::IliveMsgFactory::Instance()->Regist(Type, Msg##CreateFunc);
 
 } //namespace HANDLER
 
