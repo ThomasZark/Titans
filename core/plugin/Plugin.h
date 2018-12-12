@@ -26,7 +26,33 @@ public:
     //  arg2    - 参数2
     //@return
     virtual void Finalize(void* arg1, void* arg2) { return; }
-    
+
+    //@desc - 设置插件名称
+    //@param
+    //  strName - 插件名称
+    //@return
+    virtual void SetPluginName(std::string& strName) {
+        _pluginName = strName;
+    }
+
+    //@desc - 获取插件名称
+    //@param
+    //@return
+    virtual const std::string& GetPluginName() {
+        return _pluginName;
+    }
+
+    //@desc - 获取日志信息
+    //@param
+    //@return
+    //  std::string     - 0 日志
+    virtual std::string GetLogInfo() {
+        return _ssLog.str();
+    }
+
+protected:
+    std::stringstream _ssLog;
+    std::string _pluginName;
 };
 
 }//namespace PLUGIN

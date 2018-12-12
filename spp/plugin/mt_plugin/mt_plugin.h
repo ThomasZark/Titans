@@ -2,13 +2,13 @@
 #define _TITANS_SPP_PLUGIN_MT_PLUGIN_MT_PLUGIN_H_
 
 #include <core/common/Singleton.h>
-#include <core/plugin/Plugin.h>
+#include <spp/plugin/TmplPlugin.h>
 
 namespace TITANS {
 
 namespace PLUGIN {
 
-class MtPlugin: public Plugin {
+class MtPlugin: public TmplPlugin {
 
 public:
     MtPlugin();
@@ -19,6 +19,10 @@ public:
 
     virtual void Finalize(void* arg1, void* arg2);
 
+    virtual bool LoadParamConfig(const libconfig::Setting & sSetting);
+
+protected:
+    int iMtThreadNum;
 };
 
 typedef Singleton<MtPlugin> sMtPlugin;

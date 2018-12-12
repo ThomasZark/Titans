@@ -15,12 +15,16 @@ MtPlugin::~MtPlugin() {
 
 int MtPlugin::Initialize(void* arg1, void* arg2) {
 
+    const char* etc = static_cast<char*>(arg1);
     CServerBase* base = static_cast<CServerBase*>(arg2);
 
     if(base->servertype() == SERVER_TYPE_WORKER) {
-        int ret = CSyncFrame::Instance()->InitFrame(base, 100000);
+        if(!LoadConfig(etc)) {
+            return -10002;
+        }
+        int ret = CSyncFrame::Instance()->InitFrame(base, iMtThreadNum);
         if (ret < 0) {
-            base->log_.LOG_P_PID(LOG_FATAL, "Sync framework init failed, ret:%d\n", ret);
+            _ssLog<< "Sync framework init failed, ret=" << ret <<std::endl;
             return -10001;
         }
     }
@@ -33,6 +37,12 @@ void MtPlugin::Finalize(void* arg1, void* arg2) {
     if ( base->servertype() == SERVER_TYPE_WORKER) {
         CSyncFrame::Instance()->Destroy();
     }
+}
+
+bool MtPlugin::LoadParamConfig(const libconfig::Setting & sSetting) {
+
+    LookupValueWithDefault(sSetting, "iMtThreadNum", iMtThreadNum, 100000);
+    return true;
 }
 
 REGIST_PLUGIN(MtPlugin)
