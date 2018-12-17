@@ -55,15 +55,18 @@ public:
             int ret = plugin->second->Initialize(const_cast<char*>(_pluginConfigPath.c_str()), arg2);
             if(ret != 0) {
                 _ssLog<<"plugin "<<iter->name
-                        <<" init failed, ret="<<ret
-                        <<", log="<<plugin->second->GetLogInfo()
-                        <<std::endl;
+                        <<" init failed, ret="
+                        <<ret
+                        <<", log="
+                        <<std::endl
+                        <<plugin->second->GetLogInfo();
                 return ret;
             }
             _ssLog<<"plugin "<<iter->name
                     <<" init succ!"
-                    <<", log="<<plugin->second->GetLogInfo()
-                    <<std::endl;
+                    <<", log="
+                    <<std::endl
+                    <<plugin->second->GetLogInfo();
         }
         return 0;
     } 

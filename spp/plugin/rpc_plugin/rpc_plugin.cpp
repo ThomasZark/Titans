@@ -20,22 +20,21 @@ int RpcPlugin::Initialize(void* arg1, void* arg2) {
 
     if (base->servertype() == SERVER_TYPE_WORKER) {
         
-        if(!LoadConfig(etc, base)) {
-            base->log_.LOG_P_PID(LOG_FATAL, "RpcPlugin conf init failed\n");
-            return -1;
+        if(!LoadConfig(etc)) {
+            return -10002;
         }
         for(auto iter = m_serviceConfigure.begin(); iter != m_serviceConfigure.end(); iter ++) {
             auto plugin = m_service.find(iter->service);
             if(plugin == m_service.end()) {
-                base->log_.LOG_P_PID(LOG_FATAL, "Service %s not found\n", iter->service.c_str());
+                _ssLog<< "Service=" << iter->service << " not found" << std::endl;
                 return -2;
             }
             int ret = plugin->second->Init(m_Rpc, iter->service, *iter);
             if(ret != 0) {
-                base->log_.LOG_P_PID(LOG_FATAL, "service %s init failed, ret=%d\n", plugin->first.c_str(), ret);
+                _ssLog<< "service=" << plugin->first << "init failed, ret=" << ret << std::endl;
                 return ret;
             }
-            base->log_.LOG_P_PID(LOG_NORMAL, "service %s init succ\n", plugin->first.c_str());
+            _ssLog<< "service=" << plugin->first << "init succ" << std::endl;
         }
         return 0;
     }
@@ -50,7 +49,13 @@ int RpcPlugin::Regist(const char* pName, RPC::BaseServiceRpc* pService) {
     return 0;
 }
 
-bool RpcPlugin::LoadConfig(const char* etc, CServerBase* base) {
+bool RpcPlugin::LoadParamConfig(const libconfig::Setting & sSetting) {
+
+    LookupValueWithDefault(sSetting, "strRpcMgrPath", m_strConfigPath, std::string("./RpcMgrPath.conf"));
+    return LoadServiceConfig(m_strConfigPath.c_str());
+}
+
+bool RpcPlugin::LoadServiceConfig(const char* etc) {
     try {
         libconfig::Config m_oCfg;
         m_oCfg.readFile(etc);
@@ -62,21 +67,26 @@ bool RpcPlugin::LoadConfig(const char* etc, CServerBase* base) {
                 ||!rpc_array[index].lookupValue("timeout", conf.timeout)
                 ||!rpc_array[index].lookupValue("net", conf.net)
                 ||!rpc_array[index].lookupValue("service", conf.service)) {
-                base->log_.LOG_P_PID(LOG_ERROR, "look rpc conf falied|%d|%d|", rpc_array.getLength(), index);
+                _ssLog << "look rpc conf falied|" << rpc_array.getLength() << "|" << index << std::endl;
                 return false;
             }
-            base->log_.LOG_P_PID(LOG_DEBUG, "look rpc conf|%d|%d|%d|%d|%d|%s\n", index, conf.l5_mid, conf.l5_cid, conf.timeout, conf.net, conf.service.c_str());
+            _ssLog << "look rpc conf|" << index << "|" 
+                    << conf.l5_mid << "|" 
+                    << conf.l5_cid << "|" 
+                    << conf.timeout << "|" 
+                    << conf.net << "|" 
+                    << conf.service.c_str() << std::endl;
             m_serviceConfigure.push_back(conf);
         }
         
     } catch (const libconfig::ParseException &e) {
-        base->log_.LOG_P_PID(LOG_ERROR, "parse failed|err=%s|", e.what());
+        _ssLog<< "[RPCConfig]parse failed, err=" <<e.what() <<std::endl;
         return false;
     } catch (const libconfig::SettingException &e) {
-        base->log_.LOG_P_PID(LOG_ERROR, "setting|error=%s|", e.what());
+        _ssLog<< "[RPCConfig]setting error=" << e.what() <<std::endl;
         return false;
     } catch (const std::exception &e){
-        base->log_.LOG_P_PID(LOG_ERROR, "error=%s", e.what());
+        _ssLog<< "[RPCConfig]error=" << e.what() <<std::endl;
         return false;
     }
     return true;

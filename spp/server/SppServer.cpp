@@ -24,7 +24,8 @@ int SppServer::Initialize(struct stBaseSvrContext* pContext) {
     CServerBase* base = static_cast<CServerBase*>(pSppSvrContext->arg2);
 
     int ret = sPluginMgr::Instance()->Initialize(pSppSvrContext->arg1, pSppSvrContext->arg2);
-    base->log_.LOG_P_PID(LOG_ERROR, "Plugin Init ret=%d, info=%s\n", ret, sPluginMgr::Instance()->GetLogInfo().c_str());
+    base->log_.LOG_P_PID(LOG_ERROR, "Plugin Init ret=%d, info=\n", ret);
+    base->log_.LOG_P_PID(LOG_ERROR, "%s\n", sPluginMgr::Instance()->GetLogInfo().c_str());
     if(ret != 0) {
         return ret;
     }
