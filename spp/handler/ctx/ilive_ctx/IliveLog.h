@@ -10,7 +10,14 @@ namespace HANDLER {
                 HeadReq().version(),        \
                 HeadReq().client_type(),    \
                 HeadReq().uid(),            \
-                ##args);                               
+                ##args);                        
+
+#define LFLOG(lvl, fmt, args...)            \
+    FLOW_LOG(lvl, "[%d][%d][%zu]" fmt,      \
+                HeadReq().version(),        \
+                HeadReq().client_type(),    \
+                HeadReq().uid(),            \
+                ##args);                                                 
 
 } //namespace HANDLER
 

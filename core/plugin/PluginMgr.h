@@ -52,7 +52,7 @@ public:
                 return -2;
             }
             plugin->second->SetPluginName(iter->name);
-            int ret = plugin->second->Initialize(const_cast<char*>(_pluginConfigPath.c_str()), arg2);
+            int ret = plugin->second->Initialize(arg1, arg2);
             if(ret != 0) {
                 _ssLog<<"plugin "<<iter->name
                         <<" init failed, ret="
@@ -110,33 +110,11 @@ protected:
     std::map<std::string, Plugin*> _plugin;
     std::vector<PluginConf> _pluginConf;
     std::stringstream _ssLog;
-    std::string _pluginConfigPath;
 
     bool LoadConfig(const char* etc) {
         try {
             libconfig::Config m_oCfg;
             m_oCfg.readFile(etc);
-            if(!m_oCfg.lookupValue("strPluginConfigPath", _pluginConfigPath)) {
-                _ssLog<<"lookupValue strPluginConfigPath failed"<<std::endl;
-                return false;
-            }  
-        } catch (const libconfig::ParseException &e) {
-            _ssLog<< "parse failed, err=" <<e.what() <<std::endl;
-            return false;
-        } catch (const libconfig::SettingException &e) {
-            _ssLog<< "setting error=" << e.what() <<std::endl;
-            return false;
-        } catch (const std::exception &e){
-            _ssLog<< "error=" << e.what() <<std::endl;
-            return false;
-        }
-        return LoadPluginConfig();
-    }
-
-    bool LoadPluginConfig() {
-        try {
-            libconfig::Config m_oCfg;
-            m_oCfg.readFile(_pluginConfigPath.c_str());
             const libconfig::Setting &plugin_array = m_oCfg.lookup("plugin_mgr");
             for(int index = 0; index < plugin_array.getLength(); index ++) {
                 PluginConf conf;
@@ -166,7 +144,6 @@ protected:
         }
         return true;
     }
-
 };
 
 typedef Singleton<PluginMgr> sPluginMgr;
