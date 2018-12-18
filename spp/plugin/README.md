@@ -5,9 +5,9 @@ Titans以插件的形式来加载第三方依赖，并通过插件管理器来�
 - 1.实现插件的的标准接口
 - 2.在插件管理器进行注册
 - 3.插件配置文件加入相应配置
-
+</br>
 ## 插件配置文件
-**eg**
+**eg: template.conf**
 ```shell
 plugin_mgr = (
   {
@@ -31,7 +31,7 @@ plugin_mgr = (
 | name | 插件注册的名称 |
 | priority | 插件加载优先级，0最高 |
 | 其他 | 插件具体私有参数，配置会覆盖默认值 |
-
+</br>
 ## 插件
 **conf_plugin 通用的业务配置插件** 
 
@@ -50,9 +50,8 @@ plugin_mgr = (
 | iMaxFilesSize | 流水日志文件大小 | 52428800 |
 | iMaxFilesNum | 流水日志文件数量 | 30 |
 | iLogType | 流水日志类型 | 0 |
-</br>
 **usage**: FLOW_LOG(LOG_DEBUG, "This is flow log");
-
+</br>
 **mt_plugin 微线程插件** 
 
 | 参数 | 描述 | 默认值 |
