@@ -129,7 +129,7 @@ void TmemPlugin::Monitor(uint32_t attr, uint32_t time) {
 
 bool TmemPlugin::LoadParamConfig(const libconfig::Setting & sSetting) {
 
-	LookupValueWithDefault(sSetting, "iMonitor", iMonitor, 3472643);
+	LookupValueWithDefault(sSetting, "iMonitor", iMonitor, 33643018);
     return true;
 }
 

@@ -19,11 +19,25 @@ public:
     virtual int HandleProcess(struct stBaseHandlerContext* pContext) {
 
         blob_type* blob = static_cast<blob_type*>(pContext->arg1);
+        TConnExtInfo* extinfo = static_cast<TConnExtInfo*>(blob->extdata);
+
         CServerBase* base = static_cast<CServerBase*>(pContext->arg2);
         CTCommu* commu = static_cast<CTCommu*>(blob->owner);
         
         try {
             MSG* msg = new MSG();
+            sockaddr_in from_addr, local_addr;
+            timeval time_rcv;
+            from_addr.sin_addr.s_addr = extinfo->remoteip_;
+            from_addr.sin_port = extinfo->remoteport_;
+            local_addr.sin_addr.s_addr = extinfo->localip_;
+            local_addr.sin_port = extinfo->localport_;  
+            time_rcv.tv_sec = extinfo->recvtime_;
+            time_rcv.tv_usec = extinfo->tv_usec;
+
+            msg->SetLocalAddr(local_addr);
+            msg->SetFromAddr(from_addr);     
+            msg->SetRcvTimestamp(time_rcv);    
             msg->SetServerBase(base);
             msg->SetTCommu(commu);
             msg->SetFlow(*(static_cast<unsigned*>(pContext->arg3)));

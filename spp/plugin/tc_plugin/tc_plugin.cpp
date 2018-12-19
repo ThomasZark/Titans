@@ -1,5 +1,6 @@
 #include "tc_api.h"
 #include <syncincl.h>
+#include <Attr_API.h>
 
 #include <core/plugin/PluginMgr.h>
 #include <spp/plugin/tc_plugin/tc_plugin.h>
@@ -44,12 +45,24 @@ void TCPlugin::Finalize(void* arg1, void* arg2) {
 int TCPlugin::ReportTDBank(const std::string& str) {
     
     if(!m_init) {
+        Attr_API(MONITOR_REPORT_FAILED, 1);//tdbank上报失败
+        SF_LOG(LOG_ERROR, "tdbank do not init");
         return -1;  
     }
     if(!iTdbankTest) {
-       return tc_api_send(strTDBankBid.c_str(), strTDBankTid.c_str(), str.c_str(), str.size());
+        Attr_API(MONITOR_REPORT, 1);//tdbank上报
+        int ret = tc_api_send(strTDBankBid.c_str(), strTDBankTid.c_str(), str.c_str(), str.size());
+        if (0 != ret) {
+            Attr_API(MONITOR_REPORT_FAILED, 1);//tdbank上报失败
+            SF_LOG(LOG_ERROR, "report tdbank failed|%s|", str.c_str());
+        }
     }
     return 0;
+}
+
+void TCPlugin::Monitor(uint32_t attr, uint32_t time) {
+
+	Attr_API(iMonitor + attr, time);
 }
 
 bool TCPlugin::LoadParamConfig(const libconfig::Setting & sSetting) {
@@ -58,6 +71,7 @@ bool TCPlugin::LoadParamConfig(const libconfig::Setting & sSetting) {
     LookupValueWithDefault(sSetting, "strTDBankBid", strTDBankBid, std::string("b_sng_im_personal_live"));
     LookupValueWithDefault(sSetting, "strTDBankTid", strTDBankTid, std::string("personal_live_base"));
     LookupValueWithDefault(sSetting, "iTdbankTest", iTdbankTest, 1);
+    LookupValueWithDefault(sSetting, "iMonitor", iMonitor, 33643016);
     return true;
 }
 

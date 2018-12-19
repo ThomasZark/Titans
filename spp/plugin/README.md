@@ -74,6 +74,7 @@ plugin_mgr = (
 | strTDBankBid | tdbank 上报bid | "b_sng_im_personal_live" |
 | strTDBankTid | tdbank 上报tid | "personal_live_base" |
 | iTdbankTest | 测试环境开关 | 1(1:测试环境 0:现网环境) |
+| iMonitor | 监控 | 33643016 |
 </br>
 
 **uls_plugin uls日志插件** 
@@ -93,7 +94,7 @@ plugin_mgr = (
 
 | 参数 | 描述 | 默认值 |
 |:---:|:---:|:---:|
-| iMonitor | monitor上报 | 3472643 |
+| iMonitor | monitor上报 | 33643018 |
 </br>
 
 **hippo_producer_plugin hippo生产插件** 
