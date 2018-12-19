@@ -17,10 +17,11 @@ int FlowPlugin::Initialize(void* arg1, void* arg2) {
 
     const char* etc = static_cast<char*>(arg1);
     CServerBase* base = static_cast<CServerBase*>(arg2);
-    if(!LoadConfig(etc)) {
-        return -10002;
-    }
+
     if(base->servertype() == SERVER_TYPE_WORKER) {
+        if(!LoadConfig(etc)) {
+            return -10002;
+        }
         flow_log.LOG_OPEN(iFlowLogLevel,
                         iLogType,
                         strFlowLogPath.c_str(),

@@ -63,7 +63,7 @@ plugin_mgr = (
 
 | 参数 | 描述 | 默认值 |
 |:---:|:---:|:---:|
-| strRpcMgrPath | rpc配置文件路径 | "./RpcMgrPath.conf" |
+| strRpcMgrPath | rpc配置文件路径 | "../conf/RpcMgr.conf" |
 </br>
 
 **tc_plugin tdbank插件** 
@@ -77,6 +77,38 @@ plugin_mgr = (
 </br>
 
 **uls_plugin uls日志插件** 
+
+| 参数 | 描述 | 默认值 |
+|:---:|:---:|:---:|
+| strUlsPath | uls日志路径 | "../log/" |
+| iUlsId | uls 业务id | 0x940003 |
+| iWaterLogId | 流水日志id | 107 |
+| iColorLogId | 染色日志id | 2 |
+| iWaterLogFlag | iWaterLogFlag | 1 |
+| iColorLogFlag | iColorLogFlag | 1 |
+| bOpenLocalLog | 开启本地日志 | false |
+</br>
+
+**tmem_plugin tmem插件** 
+
+| 参数 | 描述 | 默认值 |
+|:---:|:---:|:---:|
+| iMonitor | monitor上报 | 3472643 |
+</br>
+
+**hippo_producer_plugin hippo生产插件** 
+
+| 参数 | 描述 | 默认值 |
+|:---:|:---:|:---:|
+| strSenderGroupName | hippo 组名 | "b_sng_hippo_template_producer_group" |
+| strSenderTopic | hippo 话题名 | "b_sng_hippo_template_producer_topic" |
+| strHippoConf | hippo 配置文件 | "../conf/hippoclient.conf" |
+| iTest | 测试环境开关 | 1(1:测试环境 0:现网环境) |
+| iMonitor | monitor上报 | 3472670 |
+**usage**: sHippoProducerPlugin::Instance()->SendHippoMsg("Hello World");
+</br>
+
+**hippo_comsumer_plugin hippo消费插件** 
 
 | 参数 | 描述 | 默认值 |
 |:---:|:---:|:---:|

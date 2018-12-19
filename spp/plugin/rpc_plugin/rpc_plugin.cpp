@@ -19,7 +19,6 @@ int RpcPlugin::Initialize(void* arg1, void* arg2) {
     CServerBase* base = static_cast<CServerBase*>(arg2);
 
     if (base->servertype() == SERVER_TYPE_WORKER) {
-        
         if(!LoadConfig(etc)) {
             return -10002;
         }
@@ -27,7 +26,7 @@ int RpcPlugin::Initialize(void* arg1, void* arg2) {
             auto plugin = m_service.find(iter->service);
             if(plugin == m_service.end()) {
                 _ssLog<< "Service=" << iter->service << " not found" << std::endl;
-                return -2;
+                return -10005;
             }
             int ret = plugin->second->Init(m_Rpc, iter->service, *iter);
             if(ret != 0) {
@@ -51,7 +50,7 @@ int RpcPlugin::Regist(const char* pName, RPC::BaseServiceRpc* pService) {
 
 bool RpcPlugin::LoadParamConfig(const libconfig::Setting & sSetting) {
 
-    LookupValueWithDefault(sSetting, "strRpcMgrPath", m_strConfigPath, std::string("./RpcMgrPath.conf"));
+    LookupValueWithDefault(sSetting, "strRpcMgrPath", m_strConfigPath, std::string("../conf/RpcMgr.conf"));
     return LoadServiceConfig(m_strConfigPath.c_str());
 }
 
@@ -66,6 +65,7 @@ bool RpcPlugin::LoadServiceConfig(const char* etc) {
                 ||!rpc_array[index].lookupValue("l5_cid", conf.l5_cid)
                 ||!rpc_array[index].lookupValue("timeout", conf.timeout)
                 ||!rpc_array[index].lookupValue("net", conf.net)
+                ||!rpc_array[index].lookupValue("monitor", conf.monitor)
                 ||!rpc_array[index].lookupValue("service", conf.service)) {
                 _ssLog << "look rpc conf falied|" << rpc_array.getLength() << "|" << index << std::endl;
                 return false;
@@ -75,6 +75,7 @@ bool RpcPlugin::LoadServiceConfig(const char* etc) {
                     << conf.l5_cid << "|" 
                     << conf.timeout << "|" 
                     << conf.net << "|" 
+                    << conf.monitor << "|" 
                     << conf.service.c_str() << std::endl;
             m_serviceConfigure.push_back(conf);
         }

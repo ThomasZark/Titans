@@ -32,7 +32,7 @@ SvrInit.cpp
 SppServer* GetServer() {
 
     static SppServer sppServerImpl;
-    static MtCtxHandler<IliveCodec, IliveMsgFactory> mt_ctx_handler(TestSvr::TEST_SVR, 0, 2000);
+    static MtCtxHandler<IliveCodec, IliveMsg, IliveMsgFactory> mt_ctx_handler(TestSvr::TEST_SVR, 0, 2000);
     
     sppServerImpl.SetHandler(&mt_ctx_handler)->SetServerName("TestSvr");
     return &sppServerImpl;

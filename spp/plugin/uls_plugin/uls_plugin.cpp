@@ -17,14 +17,15 @@ int ULSPlugin::Initialize(void* arg1, void* arg2) {
 
     const char* etc = static_cast<char*>(arg1);
     CServerBase* base = static_cast<CServerBase*>(arg2);
-    if(!LoadConfig(etc)) {
-        return -10002;
-    }
+
     if(base->servertype() == SERVER_TYPE_WORKER) {
+        if(!LoadConfig(etc)) {
+            return -10002;
+        }
         int uls_ret = uls::UlsLogger::init_uls(strUlsPath, iUlsId, iWaterLogId, iColorLogId, iWaterLogFlag, iColorLogFlag, bOpenLocalLog);
         if(0 != uls_ret){
             _ssLog<< "init uls log error|ret=" << uls_ret << std::endl;
-            return uls_ret;
+            return 10007;
         }
     }
     return 0;

@@ -74,7 +74,7 @@ public:
             ret = Encode();
             if(ret != 0) {
                 MONITOR_API(MONITOR_ENCODE_RSP_FAILED); // encode响应错误
-                SF_LOG(LOG_ERROR, "encode request failed|subcmd=%d|", HeadReq().subcmd());
+                LLOG(LOG_ERROR, "encode request failed|subcmd=%d|", HeadReq().subcmd());
                 SetRetcode(ret);
                 break;
             }

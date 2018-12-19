@@ -1,0 +1,88 @@
+package SppTmplSvr;
+
+enum BIG_CMD { 
+
+	SPP_TMPL_SVR = 0x412; //
+}
+
+enum SUB_CMD { 
+
+    FLOW_TEST = 0x2; //
+    TC_TEST = 0x3; //
+    TMEM_TEST = 0x4; //
+    HIPPO_COMSUMER_TEST = 0x5; //
+    HIPPO_PRODUCER_TEST = 0x6; //
+    RPC_TEST = 0x7;//
+}
+
+message FlowTestReq {
+
+    optional uint32 param = 1;//
+}
+
+message FlowTestRsp {
+
+    optional int32  retcode = 2;//
+}
+message TcTestReq {
+
+    optional uint32 param = 1;//
+}
+
+message TcTestRsp {
+
+    optional int32  retcode = 2;//
+}
+message TmemTestReq {
+
+    optional uint32 param = 1;//
+}
+
+message TmemTestRsp {
+
+    optional int32  retcode = 2;//
+}
+message HippoComsumerTestReq {
+
+    optional uint32 param = 1;//
+}
+
+message HippoComsumerTestRsp {
+
+    optional int32  retcode = 2;//
+}
+message HippoProducerTestReq {
+
+    optional uint32 param = 1;//
+}
+
+message HippoProducerTestRsp {
+
+    optional int32  retcode = 2;//
+}
+
+message RpcTestReq {
+
+    optional uint32 param = 1;//
+}
+
+message RpcTestRsp {
+
+    optional int32  retcode = 2;//
+}
+
+service SppTmplSvr {
+
+    rpc FlowTest(FlowTestReq) returns (FlowTestRsp);//
+    rpc TcTest(TcTestReq) returns (TcTestRsp);//
+    rpc TmemTest(TmemTestReq) returns (TmemTestRsp);//
+    rpc HippoComsumerTest(HippoComsumerTestReq) returns (HippoComsumerTestRsp);//
+    rpc HippoProducerTest(HippoProducerTestReq) returns (HippoProducerTestRsp);//
+    rpc RpcTest(RpcTestReq) returns (RpcTestRsp);//
+}
+
+//====================TMEM=====================
+message TmemData {
+
+    optional int32 test = 1;
+}

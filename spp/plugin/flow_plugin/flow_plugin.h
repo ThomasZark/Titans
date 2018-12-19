@@ -36,8 +36,8 @@ protected:
 
 #define FLOW_LOG(lvl, fmt, args...)                                                                             \
 do {                                                                                                            \
-    if(sFlowPlugin::Instance().IsInit() && lvl >= sFlowPlugin::Instance().flow_log.log_level(-1)) {             \
-        sFlowPlugin::Instance().flow_log.LOG_P_ALL(lvl, fmt"\n", ##args);                                       \
+    if(sFlowPlugin::Instance()->IsInit() && lvl >= sFlowPlugin::Instance()->flow_log.log_level(-1)) {             \
+        sFlowPlugin::Instance()->flow_log.LOG_P_ALL(lvl, fmt"\n", ##args);                                       \
     }                                                                                                           \
 } while (0)
 

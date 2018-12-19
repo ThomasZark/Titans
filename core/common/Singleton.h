@@ -67,6 +67,8 @@ T* Singleton <T, CreationPolicy >::Instance_ = NULL;
 template <class T, template <class> class CreationPolicy>
 T* Singleton <T, CreationPolicy >::ProtoInstance_ = NULL;
 
+#define INS(sSinglton) sSinglton::Instance()
+
 }//namespace TITANS
 
 

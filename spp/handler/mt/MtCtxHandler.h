@@ -7,7 +7,7 @@ namespace TITANS {
 
 namespace HANDLER {
 
-template<typename CODEC, typename FACTORY>
+template<typename CODEC, typename MSG, typename FACTORY>
 class MtCtxHandler: public SppHandler<CODEC> {
 
 public:
@@ -30,7 +30,7 @@ public:
         CTCommu* commu = static_cast<CTCommu*>(blob->owner);
         
         try {
-            auto msg = FACTORY::Instance()->CreateMsg(blob->data, blob->len);
+            MSG* msg = FACTORY::Instance()->CreateMsg(blob->data, blob->len);
             if(msg != NULL) {
                 msg->SetServerBase(base);
                 msg->SetTCommu(commu);

@@ -12,6 +12,7 @@ struct stServiceConfig_t {
     uint32_t l5_mid;
     uint32_t l5_cid;
     uint32_t timeout;
+    uint32_t monitor;
     uint32_t net;
 };
 

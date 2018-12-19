@@ -1,0 +1,55 @@
+{
+    "init-param":{
+        "enable_pack"   :   true,
+    
+        "pack_size"     :   4096,
+    
+        "ext_pack_size"     :   65536,
+    
+        "enable_zip"    :   true,
+    
+        "min_ziplen"    :   300,
+    
+        "enable_retry"  :   true,
+    
+        "retry_ms"      :   3000,
+    
+        "retry_num"     :   3,
+    
+        "max_bus"       :   200,
+    
+        "max_active_bus":   48,
+    
+        "max_buf_pool"  :   5242880,
+    
+        "ip_tos"        :   0,
+    
+        "msg_type"      :   5,
+    
+        "max_tid"       :   100,
+        
+        "log_num"       :   10,
+    
+        "log_size"      :   10,
+    
+        "log_level"     :   1,
+    
+        "log_file_type" :   2,
+    
+        "log_path"      :   "../log",
+    
+        "enable_hb"     :   true,
+    
+        "hb_interval"   :   60,
+    
+        "bus_cfg_url"   :    "http://10.136.4.90:8099/heartbeat/tdbus_ip?cluster_id=45&net_tag=normal",
+    
+        "bus_cfg_preurl"   :    "http://10.213.2.4:8099/api/tdbus_ip",
+    
+        "bus_update_interval"   :   10,
+    
+        "enable_limit_log" : true
+    }
+    }
+    
+    

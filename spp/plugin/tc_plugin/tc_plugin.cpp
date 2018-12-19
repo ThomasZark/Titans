@@ -18,14 +18,15 @@ int TCPlugin::Initialize(void* arg1, void* arg2) {
 
     const char* etc = static_cast<char*>(arg1);
     CServerBase* base = static_cast<CServerBase*>(arg2);
-    if(!LoadConfig(etc)) {
-        return -10002;
-    }
+    
     if(base->servertype() == SERVER_TYPE_WORKER) {
+        if(!LoadConfig(etc)) {
+            return -10002;
+        }
         int ret = tc_api_init(strTDBankConfigPath.c_str());                                                                                                                                                
         if (0 != ret) {
             _ssLog << "init tc_api failed|" << ret << std::endl;
-            return ret; 
+            return 10006; 
         } 
         m_init = true;
     }
