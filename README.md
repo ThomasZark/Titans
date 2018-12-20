@@ -11,7 +11,7 @@ Titans是一个基于spp开发的面向后台的rpc开发框架，旨在提高�
 
 
 ## 快速开始
-协议文件
+设计协议文件
 ```shell
 package TestSvr;
 
@@ -47,8 +47,7 @@ service TestSvr {
 }
 
 ```
-</br>
-项目结构
+执行工具生成项目，结构如下
 ```shell
 TestSvr
 ├── README.md
@@ -66,19 +65,17 @@ TestSvr
     └── SvrInit.cpp
     └── CMakeLists.txt
 ```
-</br>
-EchoMsg.cpp
+ECHO请求处理实现，EchoMsg.cpp
 ```shell
 class EchoMsg: public SppTmplSvrMsg<EchoReq, EchoRsp> {
 
 public:
-    EchoMsg();
+    EchoMsg() {};
 
-    virtual ~EchoMsg();
+    virtual ~EchoMsg() {};
 
     virtual int Process();
 
-protected:
 };
 //注册命令子ECHO的处理类
 REGIST(ECHO, EchoMsg)
@@ -93,18 +90,16 @@ int EchoMsg::Process() {
 }
 ```
 </br>
-HelloMsg.cpp
+HELLO请求处理实现，HelloMsg.cpp
 ```shell
 class HelloMsg: public SppTmplSvrMsg<HelloReq, HelloRsp> {
 
 public:
-    HelloMsg();
+    HelloMsg() {};
 
-    virtual ~HelloMsg();
+    virtual ~HelloMsg() {};
 
     virtual int Process();
-
-protected:
 };
 //注册命令子HELLO的处理类
 REGIST(HELLO, HelloMsg)
@@ -117,7 +112,6 @@ int HelloMsg::Process() {
     return 0;
 }
 ```
-
 SvrInit.cpp
 ```shell
 SppServer* GetServer() {

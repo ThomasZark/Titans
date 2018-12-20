@@ -6,7 +6,7 @@ Titans以插件的形式来加载第三方依赖，并通过插件管理器来�
 - 2.在插件管理器进行注册
 - 3.插件配置文件加入相应配置
 </br>
-## 插件配置文件
+##插件配置文件
 **eg: template.conf**
 ```shell
 plugin_mgr = (
@@ -104,7 +104,8 @@ plugin_mgr = (
 | strSenderGroupName | hippo 组名 | "b_sng_hippo_template_producer_group" |
 | strSenderTopic | hippo 话题名 | "b_sng_hippo_template_producer_topic" |
 | strHippoConf | hippo 配置文件 | "../conf/hippoclient.conf" |
-| iTest | 测试环境开关 | 1(1:测试环境 0:现网环境) |
+| iMonitor | monitor上报 | 3472670 |
+| iMaxHippoTryTimes | hippo发送重试次数 | 3 |
 | iMonitor | monitor上报 | 3472670 |
 **usage**: sHippoProducerPlugin::Instance()->SendHippoMsg("Hello World");
 </br>

@@ -1,6 +1,6 @@
 #include "common/attr_define.h"
 #include "common/common.h"
-#include "plugin/setting.h"
+#include "plugin/Setting.h"
 
 #include "SppTmplSvrMsg.h"
 #include "SppTmplSvr.pb.h"
@@ -55,7 +55,7 @@ int HippoComsumerTestMsg::ProcessReport(int result) {
 
 int HippoComsumerTestMsg::Process() {
 
-    BodyRsp().set_retcode(GetRetcode(HeadReq().subcmd(), BodyReq().param()));
+    BodyRsp().set_retcode(GetRetcode(HeadReq().subcmd(), 0));
     LLOG(LOG_DEBUG, "req=%s", BodyReq().ShortDebugString().c_str());
     LLOG(LOG_DEBUG, "rsp=%s", BodyRsp().ShortDebugString().c_str());
     return 0;

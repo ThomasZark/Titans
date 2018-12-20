@@ -5,8 +5,6 @@
 
 using namespace TITANS::PLUGIN;
 
-#define MAX_HIPPO_TRY_TIMES 3
-
 HippoProducerPlugin::HippoProducerPlugin() {
 
 }
@@ -50,7 +48,7 @@ void HippoProducerPlugin::Callback(const ProducerResult &sendResult) {
 		hippo_data.assign((const char*)sendResult.getUserMessage().getData(), sendResult.getUserMessage().getDataLength());
 
 		int i;
-		for (i = 0 ;i < MAX_HIPPO_TRY_TIMES; i++) {
+		for (i = 0 ;i < iMaxHippoTryTimes; i++) {
 			int hippoSucc = m_hippo_sender.set_HippoMsgAsync(hippo_data);
 			if (hippoSucc) {
 				Monitor(MONITOR_CALLBACK_RETRY_SET_HIPPO_MSG_ASYNC_SUCC, 1);  //hippo回调函数中生产消息成功
@@ -58,7 +56,7 @@ void HippoProducerPlugin::Callback(const ProducerResult &sendResult) {
 				return;
 			}
 		}
-		if (i >= MAX_HIPPO_TRY_TIMES) {
+		if (i >= iMaxHippoTryTimes) {
 			Monitor(MONITOR_CALLBACK_RETRY_SET_HIPPO_MSG_ASYNC_FAIL, 1);  //hippo回调函数中生产消息失败
 			SF_LOG(LOG_ERROR, "[Callback]set_HippoMsg failed!|errcode=%d|errmsg=%s|", m_hippo_sender.get_errcode(), m_hippo_sender.get_errmsg().c_str());
 			return;
@@ -74,7 +72,7 @@ void HippoProducerPlugin::SendHippoMsg(const std::string& hippo_data) {
     Monitor(MONITOR_HIPPO_MSG_ASYNC_SEND, 1);  //hippo生产消息
 	
     int i;
-	for (i = 0; i < MAX_HIPPO_TRY_TIMES; i++) {
+	for (i = 0; i < iMaxHippoTryTimes; i++) {
 		bool hippoSucc = m_hippo_sender.set_HippoMsgAsync(hippo_data);
 		if (hippoSucc) {
 			if (0 == i){
@@ -85,7 +83,7 @@ void HippoProducerPlugin::SendHippoMsg(const std::string& hippo_data) {
 			return;
 		}
 	}
-	if (i >= MAX_HIPPO_TRY_TIMES) {
+	if (i >= iMaxHippoTryTimes) {
 		Monitor(MONITOR_RETRY_SET_HIPPO_MSG_ASYNC_FAIL, 1);  //生产消息失败
         SF_LOG(LOG_ERROR, "set_HippoMsg failed!|errcode=%d|errmsg=%s|", 
                 m_hippo_sender.get_errcode(), m_hippo_sender.get_errmsg().c_str());
@@ -104,6 +102,7 @@ bool HippoProducerPlugin::LoadParamConfig(const libconfig::Setting & sSetting) {
     LookupValueWithDefault(sSetting, "strSenderGroupName", strSenderGroupName, std::string("b_sng_hippo_template_producer_group"));
 	LookupValueWithDefault(sSetting, "strSenderTopic", strSenderTopic, std::string("b_sng_hippo_template_producer_topic"));
 	LookupValueWithDefault(sSetting, "strHippoConf", strHippoConf, std::string("../conf/hippoclient.conf"));
+	LookupValueWithDefault(sSetting, "iMaxHippoTryTimes", iMaxHippoTryTimes, 3);
 	LookupValueWithDefault(sSetting, "iTest", iTest, 1);
 	LookupValueWithDefault(sSetting, "iMonitor", iMonitor, 3472670);
     return true;

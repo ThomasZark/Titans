@@ -33,6 +33,7 @@ protected:
     std::string strHippoConf;
     int iTest;
     int iMonitor;
+    int iMaxHippoTryTimes;
 
     enum Attr_Type {
         MONITOR_CALLBACK_SET_HIPPO_MSG_ASYNC_SUCC = 0,	            // hippo生产消息成功

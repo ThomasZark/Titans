@@ -1,6 +1,6 @@
 #include "common/attr_define.h"
 #include "common/common.h"
-#include "plugin/setting.h"
+#include "plugin/Setting.h"
 
 #include "SppTmplSvrMsg.h"
 #include "SppTmplSvr.pb.h"
@@ -8,6 +8,7 @@
 #include <spp/handler/ctx/ilive_ctx/IliveMsgFactory.h>
 #include <spp/plugin/uls_plugin/uls_plugin.h>
 #include <spp/plugin/rpc_plugin/rpc_plugin.h>
+#include <spp/plugin/hippo_producer_plugin/hippo_producer_plugin.h>
 
 using namespace TITANS;
 using namespace TITANS::HANDLER;
@@ -58,5 +59,7 @@ int HippoProducerTestMsg::Process() {
     BodyRsp().set_retcode(GetRetcode(HeadReq().subcmd(), BodyReq().param()));
     LLOG(LOG_DEBUG, "req=%s", BodyReq().ShortDebugString().c_str());
     LLOG(LOG_DEBUG, "rsp=%s", BodyRsp().ShortDebugString().c_str());
+    INS(sHippoProducerPlugin)->SendHippoMsg("[HippoProducerTestMsg] Hello world");
+    
     return 0;
 }

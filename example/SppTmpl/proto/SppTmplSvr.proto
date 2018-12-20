@@ -44,7 +44,7 @@ message TmemTestRsp {
 }
 message HippoComsumerTestReq {
 
-    optional uint32 param = 1;//
+    optional string param = 1;//
 }
 
 message HippoComsumerTestRsp {

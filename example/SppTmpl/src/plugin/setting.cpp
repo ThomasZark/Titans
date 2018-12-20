@@ -1,6 +1,6 @@
 #include <core/plugin/PluginMgr.h>
 
-#include "setting.h"
+#include "Setting.h"
 
 SettingPlugin::SettingPlugin() {
 

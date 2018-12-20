@@ -35,6 +35,7 @@ include_directories(${TITANS})
 execute_process(COMMAND mkdir -p ${CMAKE_BINARY_DIR}/proto)
 execute_process(COMMAND mkdir -p ${CMAKE_BINARY_DIR}/rpc)
 include_directories(${CMAKE_BINARY_DIR}/proto)
+include_directories(${TITANS}/spp/plugin/hippo_consumer_plugin/hippo_client_v2/lib)
 
 #拷贝依赖的proto
 execute_process(COMMAND cp ${CMAKE_SOURCE_DIR}/../proto/SppTmplSvr.proto ${CMAKE_BINARY_DIR}/proto)
@@ -54,6 +55,7 @@ aux_source_directory(${CMAKE_SOURCE_DIR}/msg DIR_SRCS)
 aux_source_directory(${CMAKE_SOURCE_DIR}/plugin DIR_SRCS)
 aux_source_directory(${CMAKE_BINARY_DIR}/proto DIR_SRCS)
 aux_source_directory(${CMAKE_BINARY_DIR}/rpc DIR_SRCS)
+aux_source_directory(${TITANS}/spp/plugin/hippo_consumer_plugin/hippo_client_v2/lib DIR_SRCS)
 
 aux_source_directory(${TITANS}/spp/server/ DIR_SRCS)
 aux_source_directory(${TITANS}/spp/plugin/mt_plugin DIR_SRCS)
@@ -64,6 +66,9 @@ aux_source_directory(${TITANS}/spp/plugin/tc_plugin DIR_SRCS)
 aux_source_directory(${TITANS}/spp/plugin/flow_plugin DIR_SRCS)
 aux_source_directory(${TITANS}/spp/plugin/tmem_plugin DIR_SRCS)
 aux_source_directory(${TITANS}/spp/plugin/hippo_producer_plugin DIR_SRCS)
+aux_source_directory(${TITANS}/spp/plugin/hippo_consumer_plugin DIR_SRCS)
+
+link_directories(${TITANS}/spp/plugin/hippo_consumer_plugin/hippo_client_v2/lib)
 
 #编译成动态库
 add_library(SppTmplSvr SHARED ${DIR_SRCS}) 
@@ -79,6 +84,7 @@ target_link_libraries(SppTmplSvr
                         sproto 
                         sppcommon
                         comm_albs_v2_client_api
+                        libhippocppclient.a
                         hippo_thread)
 
 # make deploy_test

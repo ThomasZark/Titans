@@ -1,6 +1,6 @@
 #include "common/attr_define.h"
 #include "common/common.h"
-#include "plugin/setting.h"
+#include "plugin/Setting.h"
 
 #include "SppTmplSvrMsg.h"
 #include "SppTmplSvr.pb.h"
