@@ -43,7 +43,7 @@ message HelloReq {
 
 service TestSvr {
     rpc Echo(EchoReq) returns (EchoRsp);//
-    rcp Hello(HelloReq) returns (HelloRsp);//
+    rpc Hello(HelloReq) returns (HelloRsp);//
 }
 
 ```
@@ -89,7 +89,6 @@ int EchoMsg::Process() {
     return 0;
 }
 ```
-</br>
 HELLO请求处理实现，HelloMsg.cpp
 ```shell
 class HelloMsg: public SppTmplSvrMsg<HelloReq, HelloRsp> {

@@ -6,7 +6,8 @@ Titans以插件的形式来加载第三方依赖，并通过插件管理器来�
 - 2.在插件管理器进行注册
 - 3.插件配置文件加入相应配置
 </br>
-##插件配置文件
+
+## 插件配置文件
 **eg: template.conf**
 ```shell
 plugin_mgr = (
@@ -114,11 +115,5 @@ plugin_mgr = (
 
 | 参数 | 描述 | 默认值 |
 |:---:|:---:|:---:|
-| strUlsPath | uls日志路径 | "../log/" |
-| iUlsId | uls 业务id | 0x940003 |
-| iWaterLogId | 流水日志id | 107 |
-| iColorLogId | 染色日志id | 2 |
-| iWaterLogFlag | iWaterLogFlag | 1 |
-| iColorLogFlag | iColorLogFlag | 1 |
-| bOpenLocalLog | 开启本地日志 | false |
+| strHippoTopicMgrPath | hippo消费话题配置文件 | "./HippoMgr.conf" |
 </br>
