@@ -36,7 +36,7 @@ message HelloReq {
     optional string param = 1;//
 }
 
-message HelloReq {
+message HelloRsp {
     optional int32 retcode = 1;//
     optional string str = 2;//
 }
