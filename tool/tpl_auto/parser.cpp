@@ -9,7 +9,7 @@ using namespace google::protobuf;
 using namespace google::protobuf::compiler;
 using namespace std;
 
-void IninService(const ServiceDescriptor* pServiceDesc, stEnv_t* env) {
+void InitService(const ServiceDescriptor* pServiceDesc, stEnv_t* env) {
 
     env->conf.SRV_NAME = pServiceDesc->name();
     env->conf.UP_SRV_NAME = env->conf.SRV_NAME;
@@ -446,7 +446,7 @@ void ParseServiceDict(const ServiceDescriptor* pServiceDesc, stEnv_t* env) {
 
 int ParseService(const ServiceDescriptor* pServiceDesc, stEnv_t* env) {
 
-    IninService(pServiceDesc, env);
+    InitService(pServiceDesc, env);
     if(CheckService(pServiceDesc, env) != 0) {
         return -1;
     }

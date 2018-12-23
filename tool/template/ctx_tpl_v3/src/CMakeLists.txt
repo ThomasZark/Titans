@@ -5,18 +5,8 @@ set(CMAKE_VERBOSE_MAKEFILE off)
 #find需要的cmake package
 find_package(spp REQUIRED)
 
-#检查编译器
-include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-if(COMPILER_SUPPORTS_CXX11)
-    add_definitions("-std=c++11")
-elseif(COMPILER_SUPPORTS_CXX0X)
-    add_definitions("-std=c++0x")
-endif()
-
 #设置编译选项
-add_definitions("-g -fPIC -shared -Wall -pipe -fno-ident -MMD -Werror -D_GNU_SOURCE -D_REENTRANT")
+add_definitions("-g -fPIC -shared -Wall -pipe -fno-ident -MMD -Werror -D_GNU_SOURCE -D_REENTRANT -std=c++11")
 add_definitions("-Wno-builtin-macro-redefined -D__FILE__='\"$(subst ${CMAKE_SOURCE_DIR}/,,$(abspath $<))\"'")
 
 #环境变量
@@ -28,7 +18,7 @@ set(PROTOC protoc)
 #拷贝依赖的proto
 execute_process(COMMAND mkdir -p ${CMAKE_BINARY_DIR}/proto)
 execute_process(COMMAND mkdir -p ${CMAKE_BINARY_DIR}/rpc)
-execute_process(COMMAND cp ${CMAKE_SOURCE_DIR}/../proto/{{SRV_NAME}}.proto ${CMAKE_BINARY_DIR}/proto)
+execute_process(COMMAND cp ${CMAKE_SOURCE_DIR}/../proto/{{PROTO}}.proto ${CMAKE_BINARY_DIR}/proto)
 
 #编译生成proto
 file(GLOB_RECURSE PROTO_FILE ${CMAKE_BINARY_DIR}/proto/*.proto)
@@ -36,7 +26,7 @@ execute_process(COMMAND protoc --cpp_out=${CMAKE_BINARY_DIR}/proto
 --proto_path=${CMAKE_BINARY_DIR}/proto ${PROTO_FILE})
 
 #生成依赖rpc文件
-#execute_process(COMMAND ${RPC_GEN_TOOL} -proto_dir=${CMAKE_BINARY_DIR}/proto -proto_file={{SRV_NAME}}.proto -target_path=${CMAKE_BINARY_DIR}/rpc -tpl_path=${RPC_TPL} -strict=1)
+#execute_process(COMMAND ${RPC_GEN_TOOL} -proto_dir=${CMAKE_BINARY_DIR}/proto -proto_file={{PROTO}}.proto -target_path=${CMAKE_BINARY_DIR}/rpc -tpl_path=${RPC_TPL} -strict=1)
 
 #获取依赖模块
 set(DEPEND_INCLUDE_LIST ${TITANS})
@@ -83,11 +73,3 @@ target_link_libraries({{CAMEL_SRV_NAME}}
                         sproto 
                         sppcommon
                         ${DEPEND_LIB_LIST})
-
-# make deploy_test
-set(DEPLOY "/nfs/now_ci/deploy")
-add_custom_target(deploy_test
-    COMMAND cp ../conf/deploy.test.ini ../deploy.ini && cp ../conf/service.test.yaml ./service.yaml && ${DEPLOY}
-    DEPENDS ${TipsChannelSvr}
-    COMMENT "deploy pkg to test environment..."
-)

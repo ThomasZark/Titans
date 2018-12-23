@@ -1,12 +1,6 @@
 #ifndef {{UP_SRV_NAME}}_SRC_COMMON_COMMON_H
 #define {{UP_SRV_NAME}}_SRC_COMMON_COMMON_H
 
-enum COMMAND_ID //自动生成
-{   
-{{#ENUM_CMD}}   {{CMD_ID}}
-{{/ENUM_CMD}}
-};
-
 //定义业务错误码(0成功,1~10000为系统错误 10001以上为业务错误码)
 enum EC_{{UP_SRV_NAME}}_CODE
 {
