@@ -2,9 +2,11 @@ project(titans_tool)
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_CXX_FLAGS "-g -Wall -std=c++11")
 
-#set(ctemplate_DIR ${TITANS_TOOL}/lib/ctemplate)
-
 find_package(ctemplate REQUIRED)
+find_package(jsoncpp REQUIRED)
+find_package(protobuf REQUIRED)
+find_package(glog REQUIRED)
+find_package(gflags REQUIRED)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../)

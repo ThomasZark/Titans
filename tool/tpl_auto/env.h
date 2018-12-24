@@ -17,7 +17,6 @@ struct stArg_t {
     std::string target_dir;
     std::string tpl_path;
     std::string test_tpl_path;
-    std::string rpc_dir;
     std::string head_prefix;
     std::string method;
     std::string proto_file;
@@ -26,23 +25,10 @@ struct stArg_t {
 
 struct stPara_t {
 
-    int  buss; //业务id，0为now，1为陪玩,2为附近，3为oidb
-    bool USE_ULS_LOG;
-    bool USE_TMEM;
-    bool USE_TMEM_GET;
-    bool USE_TMEM_SET;
-    bool USE_TMEM_DEL;
-    bool USE_TMEM_MGET;
-    bool ONLY_RPC;
-    bool USE_HIPPO; 
-    bool HIPPO_SENDER;
-    bool USE_TDBANK;
     bool ADD_METHOD;
     bool ADD_PLUGIN;
-    bool USE_FLOW;
     int USE_PORT;
-    std::string USE_RTX;
-    std::string TMEM_TYPE;
+    std::string USE_USER;
     std::string USE_IPS;
 };
 
