@@ -5,27 +5,27 @@ set(CMAKE_VERBOSE_MAKEFILE off)
 #find需要的cmake package
 find_package(spp REQUIRED)
 
-#检查编译器
-include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-if(COMPILER_SUPPORTS_CXX11)
-    add_definitions("-std=c++11")
-elseif(COMPILER_SUPPORTS_CXX0X)
-    add_definitions("-std=c++0x")
-endif()
-
 #设置编译选项
-add_definitions("-g -fPIC -shared -Wall -pipe -fno-ident -MMD -Werror -D_GNU_SOURCE -D_REENTRANT")
+add_definitions("-g -fPIC -shared -Wall -pipe -fno-ident -MMD -Werror -std=c++11 -D_GNU_SOURCE -D_REENTRANT")
 add_definitions("-Wno-builtin-macro-redefined -D__FILE__='\"$(subst ${CMAKE_SOURCE_DIR}/,,$(abspath $<))\"'")
 
 #环境变量
-set(TITANS ${CMAKE_SOURCE_DIR}/../../../)
+set(TITANS $ENV{TITANS_HOME})
+
+function(PROTO_RPC_GENERATE PROTO_NAME)
+   execute_process(COMMAND ctx_rpc_auto -proto_dir=${CMAKE_BINARY_DIR}/proto 
+                                        -proto_file=${PROTO_NAME}
+                                        -target_path=${CMAKE_BINARY_DIR}/rpc 
+                                        -tpl_path=${TITANS}/tool/template/ctx_tpl_v3)
+endfunction()
+function(RICK_PROTO_ATTACH SERVER)
+   execute_process(COMMAND ilive_rick_tool -proto_dir=${CMAKE_BINARY_DIR}/proto -svr_name=${SERVER})
+endfunction()
 
 #拷贝依赖的proto
 execute_process(COMMAND mkdir -p ${CMAKE_BINARY_DIR}/proto)
 execute_process(COMMAND mkdir -p ${CMAKE_BINARY_DIR}/rpc)
-execute_process(COMMAND cp ${CMAKE_SOURCE_DIR}/../proto/SppTmplSvr.proto ${CMAKE_BINARY_DIR}/proto)
+RICK_PROTO_ATTACH("SppTmplSvr")
 
 #编译生成proto
 file(GLOB_RECURSE PROTO_FILE ${CMAKE_BINARY_DIR}/proto/*.proto)
@@ -33,8 +33,7 @@ execute_process(COMMAND protoc --cpp_out=${CMAKE_BINARY_DIR}/proto
 --proto_path=${CMAKE_BINARY_DIR}/proto ${PROTO_FILE})
 
 #生成依赖rpc文件
-#execute_process(COMMAND ${RPC_GEN_TOOL} -proto_dir=${CMAKE_BINARY_DIR}/proto -proto_file=TipsChannelSvr.proto -target_path=${CMAKE_BINARY_DIR}/rpc -tpl_path=${RPC_TPL} -strict=1)
-#execute_process(COMMAND ${RPC_GEN_TOOL} -proto_dir=${CMAKE_BINARY_DIR}/proto -proto_file=ilive_account_mgr.proto -target_path=${CMAKE_BINARY_DIR}/rpc -tpl_path=${RPC_TPL} -strict=1)
+PROTO_RPC_GENERATE(SppTmplSvr.proto)
 
 #获取依赖模块
 set(DEPEND_INCLUDE_LIST ${TITANS})
@@ -58,7 +57,6 @@ ADD_SUBDIRECTORY(${TITANS}/spp/plugin/hippo_producer_plugin/ ${CMAKE_BINARY_DIR}
 include_directories(${DEPEND_INCLUDE_LIST})
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_BINARY_DIR}/proto)
-include_directories(${CMAKE_BINARY_DIR}/rpc)
 
 #获取目录下的c/cpp文件合集
 aux_source_directory(${CMAKE_SOURCE_DIR} DIR_SRCS)
@@ -81,11 +79,3 @@ target_link_libraries(SppTmplSvr
                         sproto 
                         sppcommon
                         ${DEPEND_LIB_LIST})
-
-# make deploy_test
-set(DEPLOY "/nfs/now_ci/deploy")
-add_custom_target(deploy_test
-    COMMAND cp ../conf/deploy.test.ini ../deploy.ini && cp ../conf/service.test.yaml ./service.yaml && ${DEPLOY}
-    DEPENDS ${TipsChannelSvr}
-    COMMENT "deploy pkg to test environment..."
-)

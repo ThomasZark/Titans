@@ -10,15 +10,22 @@ add_definitions("-g -fPIC -shared -Wall -pipe -fno-ident -MMD -Werror -D_GNU_SOU
 add_definitions("-Wno-builtin-macro-redefined -D__FILE__='\"$(subst ${CMAKE_SOURCE_DIR}/,,$(abspath $<))\"'")
 
 #环境变量
-set(TITANS ${CMAKE_SOURCE_DIR}/../../../)
-set(RPC_GEN_TOOL ${TITANS}/tool/build/ctx_rpc_auto)
-set(RPC_TPL ${TITANS}/tool/template/ctx_tpl_v3)
-set(PROTOC protoc)
+set(TITANS $ENV{TITANS_HOME})
+
+function(PROTO_RPC_GENERATE PROTO_NAME)
+   execute_process(COMMAND ctx_rpc_auto -proto_dir=${CMAKE_BINARY_DIR}/proto 
+                                        -proto_file=${PROTO_NAME}
+                                        -target_path=${CMAKE_BINARY_DIR}/rpc 
+                                        -tpl_path=${TITANS}/tool/template/ctx_tpl_v3)
+endfunction()
+function(RICK_PROTO_ATTACH SERVER)
+   execute_process(COMMAND ilive_rick_tool -proto_dir=${CMAKE_BINARY_DIR}/proto -svr_name=${SERVER})
+endfunction()
 
 #拷贝依赖的proto
 execute_process(COMMAND mkdir -p ${CMAKE_BINARY_DIR}/proto)
 execute_process(COMMAND mkdir -p ${CMAKE_BINARY_DIR}/rpc)
-execute_process(COMMAND cp ${CMAKE_SOURCE_DIR}/../proto/{{PROTO}}.proto ${CMAKE_BINARY_DIR}/proto)
+RICK_PROTO_ATTACH("{{PROTO}}")
 
 #编译生成proto
 file(GLOB_RECURSE PROTO_FILE ${CMAKE_BINARY_DIR}/proto/*.proto)
@@ -26,7 +33,7 @@ execute_process(COMMAND protoc --cpp_out=${CMAKE_BINARY_DIR}/proto
 --proto_path=${CMAKE_BINARY_DIR}/proto ${PROTO_FILE})
 
 #生成依赖rpc文件
-#execute_process(COMMAND ${RPC_GEN_TOOL} -proto_dir=${CMAKE_BINARY_DIR}/proto -proto_file={{PROTO}}.proto -target_path=${CMAKE_BINARY_DIR}/rpc -tpl_path=${RPC_TPL} -strict=1)
+PROTO_RPC_GENERATE({{PROTO}}.proto)
 
 #获取依赖模块
 set(DEPEND_INCLUDE_LIST ${TITANS})
