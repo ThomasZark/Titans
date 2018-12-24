@@ -9,3 +9,5 @@ aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/common DIR_SRCS)
 
 add_executable(setting_scan ${DIR_SRCS})
 target_link_libraries(setting_scan pthread gflags config++)
+
+install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/setting_scan DESTINATION bin)
