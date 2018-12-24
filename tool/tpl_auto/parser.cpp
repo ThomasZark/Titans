@@ -27,7 +27,7 @@ void InitService(const ServiceDescriptor* pServiceDesc, stEnv_t* env) {
     dict->SetValue("PACKAGE", env->conf.PACKAGE);
     dict->SetValue("HEAD_PREFIX", env->arg.head_prefix);
     dict->SetValue("PROTO", env->conf.PROTO);
-    dict->SetValue("RTX", env->para.USE_RTX);
+    dict->SetValue("USER", env->para.USE_USER);
     dict->SetValue("SERVICE_PORT", ToStr(env->para.USE_PORT));
     dict->SetValue("SERVICE_IPS",env->para.USE_IPS);
 }
@@ -370,70 +370,9 @@ void ParseServiceDict(const ServiceDescriptor* pServiceDesc, stEnv_t* env) {
 
     TemplateDictionary* dict = env->dict.dict1;
 
-    if (env->para.USE_TMEM) {
-        dict->AddSectionDictionary("TMEM");
-    }
-
-    if (env->para.USE_TMEM_GET == true) {
-        TemplateDictionary* dict1 = dict->AddSectionDictionary("TMEM_GET");
-        (void)dict1;
-        cout << GREEN <<"[使用tmem_get]" << RESET << endl;
-    }
-
-    if (env->para.ONLY_RPC== true)
-    {
-        cout << GREEN <<"[only rpc]\033[0m" << endl;
-    }
-
-    if (env->para.USE_TMEM_SET == true) {
-        TemplateDictionary* dict1 = dict->AddSectionDictionary("TMEM_SET");
-        (void)dict1;
-        cout << GREEN <<"[使用tmem_set]" << RESET << endl;
-    }
-
-    if (env->para.USE_TMEM_MGET == true) {
-        TemplateDictionary* dict1 = dict->AddSectionDictionary("TMEM_MGET");
-        cout << GREEN <<"[使用tmem_mget]" << RESET << endl;
-        dict1->SetValue("TMEM_TYPE",  env->para.TMEM_TYPE);
-    }
-
-    if (env->para.USE_TMEM_DEL == true) {
-        cout << GREEN <<"[使用tmem_del]" << RESET << endl;
-        TemplateDictionary* dict1 = dict->AddSectionDictionary("TMEM_DEL");
-        (void)dict1;
-    }
-
-    if (env->para.USE_HIPPO == true) {
-        cout << GREEN <<"[使用hippo]" << RESET << endl;
-        TemplateDictionary* dict1 = dict->AddSectionDictionary("HIPPO");
-        (void)dict1;
-    }
-
     if (env->para.ADD_METHOD == true) {
         cout << GREEN <<"[增加method]" << RESET << env->arg.method << endl;
     }
-
-    if (env->para.HIPPO_SENDER == true) {
-        TemplateDictionary* dict1 = dict->AddSectionDictionary("HIPPO_SENDER");
-        cout << GREEN <<"[增加hippo sender]" << RESET << endl;
-        (void)dict1;
-    }
-
-    if (env->para.USE_TDBANK == true) {
-        TemplateDictionary* dict1 = dict->AddSectionDictionary("TDBANK");
-        cout << GREEN <<"[增加tdbank]" << RESET << endl;
-        (void)dict1;
-    }
-
-    if (env->para.USE_FLOW == true) {
-        TemplateDictionary* dict1 = dict->AddSectionDictionary("FLOW_LOG");
-        cout << GREEN <<"[增加flow_log]" << RESET << endl;
-        (void)dict1;
-    }
-
-    TemplateDictionary* tmp_dict =  dict->AddSectionDictionary("ULS_LOG");
-    tmp_dict->SetValue("ULS_ID", ToStr(env->para.buss != 1 ? 940003 : 2200006));
-    cout << GREEN <<"[使用ULSLog]" << RESET << endl;
 
     int dependency_cnt = env->desc.pFileDescriptor->dependency_count();
     for (int i = 0; i < dependency_cnt; i++)

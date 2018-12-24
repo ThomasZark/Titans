@@ -28,20 +28,6 @@ void CreateSevice(const ServiceDescriptor* pServiceDesc, stEnv_t* env)
     Print(tpl_path + "conf/RpcMgr.conf", dict, env->conf.conf_path + "RpcMgr.conf");
     Print(tpl_path + "conf/TmplMgr.conf", dict, env->conf.conf_path + env->conf.CAMEL_SRV_NAME + "Mgr.conf");
     Print(tpl_path + "conf/Tmpl.conf", dict, env->conf.conf_path + env->conf.CAMEL_SRV_NAME + ".conf");
-    Print(tpl_path + "conf/service.test.yaml", dict, env->conf.conf_path + "service.test.yaml");
-    
-    if (env->para.USE_HIPPO || env->para.HIPPO_SENDER)
-    {
-        Print(tpl_path + "conf/hippoclient.conf", dict, env->conf.conf_path + "hippoclient.conf");
-    }
-    if (env->para.HIPPO_SENDER)
-    {
-        Print(tpl_path + "conf/HippoTopic.conf", dict, env->conf.conf_path + "HippoTopic.conf");
-    }
-    if(env->para.USE_TDBANK)
-    {
-        Print(tpl_path + "conf/config.json", dict, env->conf.conf_path + "config.json"); 
-    }
 
     for (int i = 0; i < pServiceDesc->method_count(); i++) {
         const MethodDescriptor* pMethodDesc = pServiceDesc->method(i);

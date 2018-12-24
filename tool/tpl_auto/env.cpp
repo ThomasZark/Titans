@@ -11,12 +11,10 @@ using namespace google::protobuf::compiler;
 
 DEFINE_string(proto_dir, "", "proto文件所在目录的绝对路径");
 DEFINE_string(target_path, "", "代码生成目标目录的绝对路径");
-DEFINE_string(tpl_path, "/data/qapp_auto/ctx_tpl_v2/",
-              "模板文件目录路径默认为：/data/qapp_auto/ctx_tpl_v2/");
-DEFINE_string(test_tpl_path, "/data/qapp_auto/ctx_tpl_v2/test_tpl/",
-              "测试代码模板目录默认为:/data/qapp_auto/test_tpl/");
+DEFINE_string(tpl_path, "","模板文件目录路径");
+DEFINE_string(test_tpl_path, "/","测试代码模板目录");
 DEFINE_string(proto_file, "", "proto文件名(无需目录前缀)");
-DEFINE_string(param, "{\"tmem_get\":1,\"only_rpc\":0,\"hippo_sender\":1, \"tdbank\":1, \"flow_log\":1}", "json配置服务所需特性：如\"{\"tmem_get\":1,\"tmem_set\":1,\"tmem_del\":1,\"only_rpc\":0,\"hippo\":1}\"");
+DEFINE_string(param, "{\"add_method\":1, \"flow_log\":1}", "json配置服务所需特性");
 DEFINE_string(head_prefix, "", "头文件define前缀");
 DEFINE_string(method, "", "增加的子命令字");
 DEFINE_int32(strict, 0, "0 严格检查, 1不检查");
@@ -81,21 +79,10 @@ void FormatPath(stEnv_t* env) {
 
 void ProcPara(stEnv_t* env)
 {
-    env->para.buss = 0;//默认为now
-    env->para.USE_ULS_LOG = true;
-    env->para.USE_TMEM = false;
-    env->para.USE_TMEM_GET = false;
-    env->para.USE_TMEM_SET = false;
-    env->para.USE_TMEM_DEL = false;
-    env->para.USE_TMEM_MGET = false;
-    env->para.ONLY_RPC = false;
-    env->para.USE_HIPPO = false; 
-    env->para.USE_TDBANK = false; 
-    env->para.HIPPO_SENDER = false; 
     env->para.ADD_METHOD = false; 
     env->para.ADD_PLUGIN = false; 
     env->para.USE_FLOW = false; 
-    env->para.USE_RTX = "unknown";
+    env->para.USE_USER = "unknown";
     env->para.USE_PORT = 0;
 
 
@@ -106,57 +93,12 @@ void ProcPara(stEnv_t* env)
         cout << "decode json failed,err=" << e.what() << endl;
     }
 
-    if (value.isMember("buss_id")){
-        env->para.buss = value["buss_id"].asUInt();
-    }
-
-    if (value.hasKey("tmem_get") || value.hasKey("tmem_set") || value.hasKey("tmem_mget") || value.hasKey("tmem_del")) {
-        env->para.USE_TMEM = true;
-    }
-
-    if (value.hasKey("tmem_get")) {
-        env->para.USE_TMEM_GET = true;
-    }
-
-    if (value.hasKey("only_rpc")){
-        env->para.ONLY_RPC= true;
-    }
-
-    if (value.hasKey("tmem_set")) {
-        env->para.USE_TMEM_SET = true;
-    }
-
-    if (value.hasKey("tmem_mget")) {
-        env->para.USE_TMEM_MGET = true;
-        env->para.TMEM_TYPE = value["tmem_type"].asString();
-    }
-
-    if (value.hasKey("tmem_del")) {
-        env->para.USE_TMEM_DEL = true;
-    }
-
-    if (value.hasKey("hippo")) {
-        env->para.USE_HIPPO = true;
-    }
-
-    if(value.hasKey("hippo_sender")) {
-        env->para.HIPPO_SENDER = true;
-    }
-
-    if(value.hasKey("tdbank")) {
-        env->para.USE_TDBANK = true;
-    }
-
     if(value.hasKey("add_method")) {
         env->para.ADD_METHOD = true;
     }
 
     if(value.hasKey("add_plugin")) {
         env->para.ADD_PLUGIN = true;
-    }
-
-    if(value.hasKey("flow_log")) {
-        env->para.USE_FLOW = true;
     }
 
     if (value.hasKey("port")) {
@@ -168,9 +110,7 @@ void ProcPara(stEnv_t* env)
 	}
 	
 
-    env->para.USE_RTX = value["rtx"].asString();
-
-    env->para.USE_ULS_LOG = true;
+    env->para.USE_USER = value["user"].asString();
     return;
 }
 
@@ -183,7 +123,6 @@ void InitEnv(int* args, char*** argv, bool, stEnv_t* env) {
     env->arg.head_prefix = FLAGS_head_prefix;
     env->arg.method = FLAGS_method;
     env->arg.proto_file = FLAGS_proto_file;
-    env->arg.rpc_dir = "/nfs/spp_rpc/now_public/";
     env->arg.strict = FLAGS_strict;
 
     ProcPara(env);
