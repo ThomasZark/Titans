@@ -7,6 +7,14 @@ namespace TITANS {
 
 namespace ROUTE {
 
+enum {
+    ROUTE_SUCC          = 0,
+    ROUTE_KEY_ERROR     = -20001,
+    ROUTE_GET_ERROR     = -20002,
+    ROUTE_UPDATE_ERROR  = -20003,
+    ROUTE_PROTECT       = -20004,
+};
+
 struct stRoute_t {
     std::string ip;
     unsigned port;

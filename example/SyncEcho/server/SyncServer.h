@@ -14,7 +14,7 @@ public:
 
     virtual void Finalize(struct stBaseSvrContext* pContext);
 
-    virtual int Serve(struct stBaseSvrContext* pContext) 
+    virtual int Serve(struct stBaseSvrContext* pContext);
 
 
 };

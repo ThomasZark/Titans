@@ -5,7 +5,8 @@ int main() {
 
     SyncTcpHandler handler(1000);
     SyncServer server;
-
+    
+    server.Initialize(NULL);
     server.SetServerName("SyncEchoServer")->SetHandler(&handler);
-    return server.Serve();
+    return server.Serve(NULL);
 }

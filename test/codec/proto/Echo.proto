@@ -1,0 +1,12 @@
+package Echo;
+
+message EchoReq {
+
+    optional int32 appid = 1;//
+    optional string data = 2;//
+}
+
+message EchoRsp {
+    optional int32 retcode = 1;//
+    optional string errmsg = 2;//
+}

@@ -12,6 +12,14 @@ namespace TITANS {
 
 namespace RPC {
 
+enum {
+    RPC_SUCC            = 0,
+    RPC_PARAM_ERROR     = -40001,
+    RPC_CODEC_ERROR     = -40002,
+    RPC_NET_ERROR       = -40003,
+    RPC_ROUTE_RERROR    = -40005,
+};
+
 class BaseRpc {
 
 public:
@@ -42,7 +50,7 @@ public:
     //  strName - BaseRpc名称
     //@return
     virtual BaseRpc* SetRpcName(std::string& strName) {
-        _pluginName = strName;
+        _rpcName = strName;
         return this;
     }
 
@@ -50,7 +58,7 @@ public:
     //@param
     //@return
     virtual const std::string& GetRpcName() {
-        return _pluginName;
+        return _rpcName;
     }
 
     //@desc - 设置BaseRpc关联route
@@ -101,17 +109,25 @@ public:
         return _pNet;
     }
 
+    //@desc - rpc执行函数
+    //@param
+    //@return
+    //  int     - 0 成功
+    virtual int Call() {
+        return 0;
+    }
+
     //@desc - 获取日志信息
     //@param
     //@return
-    //  std::string     - 0 日志
+    //  std::string     -日志
     virtual std::string GetLogInfo() {
         return _ssLog.str();
     }
 
 protected:
     std::stringstream _ssLog;
-    std::string _pluginName;
+    std::string _rpcName;
 
     TITANS::CODEC::BaseCodec* _pCodec;
     TITANS::ROUTE::BaseRoute* _pRoute;

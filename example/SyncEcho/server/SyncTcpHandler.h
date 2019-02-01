@@ -6,15 +6,15 @@
 class SyncTcpHandler: public TITANS::HANDLER::BaseHandler {
 
 public:
-    explicit SyncTcpHandler(unsigned port);
+    explicit SyncTcpHandler(unsigned port):_port(port) {};
 
-    virtual ~SyncTcpHandler();
+    virtual ~SyncTcpHandler() {};
 
-    virtual int Initialize(struct stBaseHandlerContext* pContext);
+    virtual int Initialize(struct TITANS::HANDLER::stBaseHandlerContext* pContext);
 
-    virtual void Finalize(struct stBaseHandlerContext* pContext);
+    virtual void Finalize(struct TITANS::HANDLER::stBaseHandlerContext* pContext);
 
-    virtual int HandleProcess(struct stBaseHandlerContext* pContext);
+    virtual int HandleProcess(struct TITANS::HANDLER::stBaseHandlerContext* pContext);
 
 protected:
     unsigned  _port;

@@ -14,24 +14,17 @@
 
 using namespace TITANS::HANDLER;
 
-SyncTcpHandler::SyncTcpHandler():_port(port) {
-
-}
-
-SyncTcpHandler::~SyncTcpHandler() {
-
-}
-
-int SyncTcpHandler::Initialize(struct stBaseHandlerContext* pContext) {
+int SyncTcpHandler::Initialize(struct TITANS::HANDLER::stBaseHandlerContext* pContext) {
     std::cout<<"SyncTcpHandler init"<<std::endl;
+    return 0;
 }
 
-int SyncTcpHandler::HandleProcess(struct stBaseHandlerContext* pContext) {
+int SyncTcpHandler::HandleProcess(struct TITANS::HANDLER::stBaseHandlerContext* pContext) {
     
     int sockfd,new_fd;
     struct sockaddr_in server_addr;
     struct sockaddr_in client_addr;
-    int sin_size,iDataNum;
+    unsigned sin_size,iDataNum;
     char buffer[4096];
 
     if((sockfd=socket(AF_INET,SOCK_STREAM,0))==-1){
@@ -46,12 +39,13 @@ int SyncTcpHandler::HandleProcess(struct stBaseHandlerContext* pContext) {
     if(bind(sockfd,(struct sockaddr *)(&server_addr),sizeof(struct sockaddr))==-1){
         fprintf(stderr,"Bind error:%s\n\a",strerror(errno));
         return 0;
-    }
+    }  
     if(listen(sockfd,5)==-1){
         fprintf(stderr,"Listen error:%s\n\a",strerror(errno));
         return 0;
     }
 
+    fprintf(stdout,"Listen port=%u\n", _port);
     while(1)
     {
         sin_size=sizeof(struct sockaddr_in);
@@ -61,14 +55,14 @@ int SyncTcpHandler::HandleProcess(struct stBaseHandlerContext* pContext) {
             return 0;
         }
         fprintf(stdout,"Server get connection from %s\n",inet_ntoa(client_addr.sin_addr));
-        iDataNum=recv(new_fd,buffer,4096,0);
+        iDataNum=read(new_fd,buffer,4096);
         if(iDataNum<0)
         { 
             perror("Recv\n");
             exit(1);
         }
-        printf("Recv data is %s\n",buffer);
-        send(new_fd,buffer,sizeof(buffer),0);
+        printf("Recv data is %s n is %d\n",buffer, iDataNum);
+        write(new_fd,buffer,iDataNum);
         close(new_fd);
     }
 
@@ -76,6 +70,6 @@ int SyncTcpHandler::HandleProcess(struct stBaseHandlerContext* pContext) {
     return 0;
 }
 
-void SyncTcpHandler::Finalize(struct stBaseHandlerContext* pContext) {
+void SyncTcpHandler::Finalize(struct TITANS::HANDLER::stBaseHandlerContext* pContext) {
     std::cout<<"SyncTcpHandler final"<<std::endl;
 }

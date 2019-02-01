@@ -13,9 +13,10 @@ SyncServer::~SyncServer() {
 int SyncServer::Initialize(struct stBaseSvrContext* pContext) {
 
     std::cout<<GetServerName()<<" start!"<<std::endl;
+    return 0;
 }
 
-int SyncServer::Finalize(struct stBaseSvrContext* pContext) {
+void SyncServer::Finalize(struct stBaseSvrContext* pContext) {
 
     std::cout<<GetServerName()<<" end!"<<std::endl;
 }
