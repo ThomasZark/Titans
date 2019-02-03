@@ -3,6 +3,7 @@
 
 #include <string>
 #include <sstream>
+#include <memory>
 
 #include <core/codec/BaseCodec.h>
 #include <core/route/BaseRoute.h>
@@ -24,9 +25,9 @@ class BaseRpc {
 
 public:
     BaseRpc()
-    :_pCodec(NULL)
-    ,_pRoute(NULL)
-    ,_pNet(NULL) {}
+    :_pCodec(nullptr)
+    ,_pRoute(nullptr)
+    ,_pNet(nullptr) {}
 
     virtual ~BaseRpc() {}
 
@@ -49,8 +50,17 @@ public:
     //@param
     //  strName - BaseRpc名称
     //@return
-    virtual BaseRpc* SetRpcName(std::string& strName) {
+    virtual BaseRpc* SetRpcName(const std::string& strName) {
         _rpcName = strName;
+        return this;
+    }
+
+    //@desc - 设置BaseRpc名称
+    //@param
+    //  strName - BaseRpc名称
+    //@return
+    virtual BaseRpc* SetRpcName(std::string&& strName) {
+        _rpcName = std::forward<std::string>(strName);
         return this;
     }
 
@@ -65,7 +75,7 @@ public:
     //@param
     //  strName - BaseRpc名称
     //@return
-    virtual BaseRpc* SetRoute(TITANS::ROUTE::BaseRoute* pRoute) {
+    virtual BaseRpc* SetRoute(std::shared_ptr<TITANS::ROUTE::BaseRoute> pRoute) {
         _pRoute = pRoute;
         return this;
     }
@@ -73,7 +83,7 @@ public:
     //@desc - 获取BaseRpc关联route
     //@param
     //@return
-    virtual TITANS::ROUTE::BaseRoute* GetRoute() {
+    virtual std::shared_ptr<TITANS::ROUTE::BaseRoute> GetRoute() {
         return _pRoute;
     }
 
@@ -81,7 +91,7 @@ public:
     //@param
     //  strName - BaseRpc名称
     //@return
-    virtual BaseRpc* SetCodec(TITANS::CODEC::BaseCodec* pCodec) {
+    virtual BaseRpc* SetCodec(std::shared_ptr<TITANS::CODEC::BaseCodec> pCodec) {
         _pCodec = pCodec;
         return this;
     }
@@ -89,7 +99,7 @@ public:
     //@desc - 获取BaseRpc关联codec
     //@param
     //@return
-    virtual TITANS::CODEC::BaseCodec* GetCodec() {
+    virtual std::shared_ptr<TITANS::CODEC::BaseCodec> GetCodec() {
         return _pCodec;
     }
 
@@ -97,7 +107,7 @@ public:
     //@param
     //  strName - BaseRpc名称
     //@return
-    virtual BaseRpc* SetNet(TITANS::NET::BaseNet* pNet) {
+    virtual BaseRpc* SetNet(std::shared_ptr<TITANS::NET::BaseNet> pNet) {
         _pNet = pNet;
         return this;
     }
@@ -105,7 +115,7 @@ public:
     //@desc - 获取BaseRpc关联net
     //@param
     //@return
-    virtual TITANS::NET::BaseNet* GetNet() {
+    virtual std::shared_ptr<TITANS::NET::BaseNet> GetNet() {
         return _pNet;
     }
 
@@ -125,13 +135,25 @@ public:
         return _ssLog.str();
     }
 
-protected:
-    std::stringstream _ssLog;
-    std::string _rpcName;
+    //@desc - 获取日志器
+    //@param
+    //@return
+    //  std::string     -日志器
+    virtual std::stringstream& LOG() {
+        return _ssLog;
+    }
 
-    TITANS::CODEC::BaseCodec* _pCodec;
-    TITANS::ROUTE::BaseRoute* _pRoute;
-    TITANS::NET::BaseNet* _pNet;
+protected:
+    //rpc名称
+    std::string _rpcName;
+    //编码器指针
+    std::shared_ptr<TITANS::CODEC::BaseCodec> _pCodec;
+    //路由指针
+    std::shared_ptr<TITANS::ROUTE::BaseRoute> _pRoute;
+    //网络器指针
+    std::shared_ptr<TITANS::NET::BaseNet> _pNet;
+    //日志器
+    std::stringstream _ssLog;
 };
 
 }//namespace RPC

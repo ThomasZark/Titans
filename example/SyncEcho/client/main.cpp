@@ -1,24 +1,29 @@
 #include <iostream>
+#include <core/route/IPRoute.h>
+#include <core/common/Memory.h>
 
 #include "EchoRpc.h"
-#include "IPRoute.h"
 #include "PlatCodec.h"
 #include "SyncTcpNet.h"
 
-int main() {
+using namespace TITANS::ROUTE;
+using namespace TITANS::RPC;
 
-    EchoRpc rpc;
-    IPRoute route;
-    SyncTcpNet net;
+std::shared_ptr<BaseRpc> GetEchoRpcProxy() {
+
+        auto it = std::make_shared<EchoRpc>();
+        it->SetNet(std::make_shared<SyncTcpNet>())
+                ->SetRoute(std::shared_ptr<IPRoute>(sIPRoute::Instance(), TITANS::stack_delete<IPRoute>));
+        return it;
+}
+
+int main() {
 
     while(true) {
 
         PlatCodec codec;
         std::cin>>codec.BodyReq();
-        int ret = rpc.SetCodec(&codec)
-                        ->SetNet(&net)
-                        ->SetRoute(&route)
-                        ->Call();
+        int ret = GetEchoRpcProxy()->SetCodec(std::shared_ptr<PlatCodec>(&codec, TITANS::stack_delete<PlatCodec>))->Call();
 
         std::cout<<"ret="<<ret 
                 <<"rsp="<<codec.BodyRsp()

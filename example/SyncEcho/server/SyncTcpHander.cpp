@@ -14,12 +14,12 @@
 
 using namespace TITANS::HANDLER;
 
-int SyncTcpHandler::Initialize(struct TITANS::HANDLER::stBaseHandlerContext* pContext) {
+int SyncTcpHandler::Initialize(std::shared_ptr<TITANS::HANDLER::stBaseHandlerContext> pContext) {
     std::cout<<"SyncTcpHandler init"<<std::endl;
     return 0;
 }
 
-int SyncTcpHandler::HandleProcess(struct TITANS::HANDLER::stBaseHandlerContext* pContext) {
+int SyncTcpHandler::HandleProcess(std::shared_ptr<TITANS::HANDLER::stBaseHandlerContext> pContext) {
     
     int sockfd,new_fd;
     struct sockaddr_in server_addr;
@@ -70,6 +70,6 @@ int SyncTcpHandler::HandleProcess(struct TITANS::HANDLER::stBaseHandlerContext* 
     return 0;
 }
 
-void SyncTcpHandler::Finalize(struct TITANS::HANDLER::stBaseHandlerContext* pContext) {
+void SyncTcpHandler::Finalize(std::shared_ptr<TITANS::HANDLER::stBaseHandlerContext> pContext) {
     std::cout<<"SyncTcpHandler final"<<std::endl;
 }

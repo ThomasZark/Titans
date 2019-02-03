@@ -10,18 +10,18 @@ SyncServer::~SyncServer() {
 
 }
 
-int SyncServer::Initialize(struct stBaseSvrContext* pContext) {
+int SyncServer::Initialize(std::shared_ptr<TITANS::SERVER::stBaseSvrContext> pContext) {
 
     std::cout<<GetServerName()<<" start!"<<std::endl;
     return 0;
 }
 
-void SyncServer::Finalize(struct stBaseSvrContext* pContext) {
+void SyncServer::Finalize(std::shared_ptr<TITANS::SERVER::stBaseSvrContext> pContext) {
 
     std::cout<<GetServerName()<<" end!"<<std::endl;
 }
 
-int SyncServer::Serve(struct stBaseSvrContext* pContext) {
+int SyncServer::Serve(std::shared_ptr<TITANS::SERVER::stBaseSvrContext> pContext) {
 
-    return GetHandler()->HandleProcess(NULL);
+    return GetHandler()->HandleProcess(nullptr);
 }

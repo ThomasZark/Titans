@@ -8,7 +8,7 @@ Titans使用[catch2](https://github.com/catchorg/Catch2)进行自身单元测试
 cd test
 mkdir -p build
 cd  build
-cmake ../
+cmake ../ -DCMAKE_PREFIX_PATH=
 make
 make test
 ```

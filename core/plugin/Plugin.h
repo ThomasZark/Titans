@@ -50,8 +50,18 @@ public:
         return _ssLog.str();
     }
 
+    //@desc - 获取日志记录器
+    //@param
+    //@return
+    //  std::string     -日志记录器
+    virtual std::stringstream& SSLOG() {
+        return _ssLog;
+    }
+
 protected:
+    //日志记录器
     std::stringstream _ssLog;
+    //插件名称
     std::string _pluginName;
 };
 

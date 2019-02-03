@@ -41,20 +41,20 @@ public:
 
         const char * etc  = const_cast<const char*>(static_cast<char*>(arg1));
         if(!LoadConfig(etc)) {
-            _ssLog<<"RpcMgr conf init failed"<<std::endl;
+            SSLOG()<<"RpcMgr conf init failed"<<std::endl;
             return -1;
         }
         std::sort(_rpcConf.begin(), _rpcConf.end());
         for(auto iter = _rpcConf.begin(); iter != _rpcConf.end(); iter ++) {
             auto rpcImpl = _rpcMap.find(iter->name);
             if(rpcImpl == _rpcMap.end()) {
-                _ssLog<<"Rpc "<<iter->name<<" not found"<<std::endl;
+                SSLOG()<<"Rpc "<<iter->name<<" not found"<<std::endl;
                 return -2;
             }
             rpcImpl->second->SetRpcName(iter->name);
             int ret = rpcImpl->second->Initialize(arg1, arg2);
             if(ret != 0) {
-                _ssLog<<"Rpc "<<iter->name
+                SSLOG()<<"Rpc "<<iter->name
                         <<" init failed, ret="
                         <<ret
                         <<", log="
@@ -62,7 +62,7 @@ public:
                         <<rpcImpl->second->GetLogInfo();
                 return ret;
             }
-            _ssLog<<"Rpc "<<iter->name
+            SSLOG()<<"Rpc "<<iter->name
                     <<" init succ!"
                     <<", log="
                     <<std::endl
@@ -107,8 +107,11 @@ public:
     }
 
 protected:
+    //注册rpc
     std::map<std::string, BaseRpc*> _rpcMap;
+    //rpc配置
     std::vector<RpcConf> _rpcConf;
+    //日志
     std::stringstream _ssLog;
 
     bool LoadConfig(const char* etc) {
@@ -120,12 +123,12 @@ protected:
                 RpcConf conf;
                 if(!Rpc_array[index].lookupValue("name", conf.name)
                     ||!Rpc_array[index].lookupValue("priority", conf.priority)) {
-                    _ssLog<<"look Rpc conf falied, Rpc_length="<<Rpc_array.getLength()
+                    SSLOG()<<"look Rpc conf falied, Rpc_length="<<Rpc_array.getLength()
                             <<", index="<<index
                             <<std::endl;
                     return false;
                 }
-                _ssLog<<"look Rpc conf, index="<<index
+                SSLOG()<<"look Rpc conf, index="<<index
                         <<", priority="<<conf.priority
                         <<", Rpc="<<conf.name
                         <<std::endl;;
@@ -133,13 +136,13 @@ protected:
             }
             
         } catch (const libconfig::ParseException &e) {
-            _ssLog<< "parse failed, err=" <<e.what() <<std::endl;
+            SSLOG()<< "parse failed, err=" <<e.what() <<std::endl;
             return false;
         } catch (const libconfig::SettingException &e) {
-            _ssLog<< "setting error=" << e.what() <<std::endl;
+            SSLOG()<< "setting error=" << e.what() <<std::endl;
             return false;
         } catch (const std::exception &e){
-            _ssLog<< "error=" << e.what() <<std::endl;
+            SSLOG()<< "error=" << e.what() <<std::endl;
             return false;
         }
         return true;

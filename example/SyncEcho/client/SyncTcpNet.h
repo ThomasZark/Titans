@@ -37,14 +37,14 @@ public:
             printf("connet error:%s\n",strerror(errno));
         }
 
-        write(sockfd,_strReq.c_str(),_strReq.size()); 
+        write(sockfd, _pReq->c_str(), _pReq->size()); 
 
         _strRsp.clear();
         while(true) {
             n = read(sockfd,buf,4096);
             printf("Recv data is %s n is %d\n",buf, n);
             _strRsp.append(buf, n);
-            if(_checkFunc(_strRsp.c_str(), _strRsp.size(), NULL) > 0) {
+            if(_checkFunc(_strRsp.c_str(), _strRsp.size(), nullptr) > 0) {
                 break;
             }
         };

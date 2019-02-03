@@ -41,32 +41,32 @@ public:
 
         const char * etc  = const_cast<const char*>(static_cast<char*>(arg1));
         if(!LoadConfig(etc)) {
-            _ssLog<<"pluginMgr conf init failed"<<std::endl;
+            SSLOG()<<"pluginMgr conf init failed"<<std::endl;
             return -1;
         }
         std::sort(_pluginConf.begin(), _pluginConf.end());
         for(auto iter = _pluginConf.begin(); iter != _pluginConf.end(); iter ++) {
             auto plugin = _plugin.find(iter->name);
             if(plugin == _plugin.end()) {
-                _ssLog<<"plugin "<<iter->name<<" not found"<<std::endl;
+                SSLOG()<<"plugin "<<iter->name<<" not found"<<std::endl;
                 return -2;
             }
             plugin->second->SetPluginName(iter->name);
             int ret = plugin->second->Initialize(arg1, arg2);
             if(ret != 0) {
-                _ssLog<<"plugin "<<iter->name
+                SSLOG()<<"plugin "<<iter->name
                         <<" init failed, ret="
                         <<ret
                         <<", log="
                         <<std::endl
-                        <<plugin->second->GetLogInfo();
+                        <<plugin->second->GetSSLOGInfo();
                 return ret;
             }
-            _ssLog<<"plugin "<<iter->name
+            SSLOG()<<"plugin "<<iter->name
                     <<" init succ!"
                     <<", log="
                     <<std::endl
-                    <<plugin->second->GetLogInfo();
+                    <<plugin->second->GetSSLOGInfo();
         }
         return 0;
     } 
@@ -101,14 +101,17 @@ public:
     //@param
     //@return
     //  std::string     - 0 日志
-    virtual std::string GetLogInfo() {
+    virtual std::string GetSSLOGInfo() {
 
         return _ssLog.str();
     }
 
 protected:
+    //注册插件
     std::map<std::string, Plugin*> _plugin;
+    //插件配置
     std::vector<PluginConf> _pluginConf;
+    //日志
     std::stringstream _ssLog;
 
     bool LoadConfig(const char* etc) {
@@ -120,12 +123,12 @@ protected:
                 PluginConf conf;
                 if(!plugin_array[index].lookupValue("name", conf.name)
                     ||!plugin_array[index].lookupValue("priority", conf.priority)) {
-                    _ssLog<<"look plugin conf falied, plugin_length="<<plugin_array.getLength()
+                    SSLOG()<<"look plugin conf falied, plugin_length="<<plugin_array.getLength()
                             <<", index="<<index
                             <<std::endl;
                     return false;
                 }
-                _ssLog<<"look plugin conf, index="<<index
+                SSLOG()<<"look plugin conf, index="<<index
                         <<", priority="<<conf.priority
                         <<", plugin="<<conf.name
                         <<std::endl;;
@@ -133,13 +136,13 @@ protected:
             }
             
         } catch (const libconfig::ParseException &e) {
-            _ssLog<< "parse failed, err=" <<e.what() <<std::endl;
+            SSLOG()<< "parse failed, err=" <<e.what() <<std::endl;
             return false;
         } catch (const libconfig::SettingException &e) {
-            _ssLog<< "setting error=" << e.what() <<std::endl;
+            SSLOG()<< "setting error=" << e.what() <<std::endl;
             return false;
         } catch (const std::exception &e){
-            _ssLog<< "error=" << e.what() <<std::endl;
+            SSLOG()<< "error=" << e.what() <<std::endl;
             return false;
         }
         return true;

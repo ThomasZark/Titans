@@ -13,4 +13,5 @@ include_directories(${TITANS})
 include_directories(${CATCH_INCLUDE_DIRS})
 
 #编译单元测试
-ADD_SUBDIRECTORY(${TITANS_TEST}/codec/proto ${CMAKE_BINARY_DIR}/codec/proto)
+ADD_SUBDIRECTORY(${TITANS_TEST}/codec ${CMAKE_BINARY_DIR}/codec)
+ADD_SUBDIRECTORY(${TITANS_TEST}/route ${CMAKE_BINARY_DIR}/route)

@@ -2,6 +2,7 @@
 #define _TITANS_CORE_SERVER_BASESERVER_H_
 
 #include <string>
+#include <memory>
 
 #include <core/handler/BaseHandler.h>
 
@@ -25,7 +26,7 @@ public:
     //  pContext    - 初始化参数
     //@return
     //  int     - 0 成功
-    virtual int Initialize(struct stBaseSvrContext* pContext) { 
+    virtual int Initialize(std::shared_ptr<struct stBaseSvrContext> pContext) { 
         return 0; 
     }
 
@@ -34,7 +35,7 @@ public:
     //  pContext    - 初始化参数
     //@return
     //  int     - 0 成功
-    virtual void Finalize(struct stBaseSvrContext* pContext) { 
+    virtual void Finalize(std::shared_ptr<struct stBaseSvrContext> pContext) { 
         return; 
     }
 
@@ -43,7 +44,7 @@ public:
     //  pContext    - 初始化参数
     //@return
     //  int     - 0 成功
-    virtual int Serve(struct stBaseSvrContext* pContext) { 
+    virtual int Serve(std::shared_ptr<struct stBaseSvrContext> pContext) { 
         return 0; 
     }
 
@@ -52,7 +53,7 @@ public:
     //  pBaseHandler    - 处理器
     //@return
     //  BaseServer*     - 服务指针
-    virtual BaseServer* SetHandler(HANDLER::BaseHandler* pHandler) { 
+    virtual BaseServer* SetHandler(std::shared_ptr<HANDLER::BaseHandler> pHandler) { 
         _pHandler = pHandler;
         return this;
     }
@@ -61,7 +62,7 @@ public:
     //@param
     //@return
     //  BaseHandler*     - 服务处理器指针
-    virtual HANDLER::BaseHandler* GetHandler() { 
+    virtual std::shared_ptr<HANDLER::BaseHandler> GetHandler() { 
         return _pHandler; 
     }
 
@@ -84,7 +85,9 @@ public:
     }
 
 protected:
-    HANDLER::BaseHandler* _pHandler;
+    //处理器指针
+    std::shared_ptr<HANDLER::BaseHandler> _pHandler;
+    //服务名称
     std::string _name;
 };
 

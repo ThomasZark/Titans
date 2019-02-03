@@ -10,11 +10,11 @@ public:
 
     virtual ~SyncTcpHandler() {};
 
-    virtual int Initialize(struct TITANS::HANDLER::stBaseHandlerContext* pContext);
+    virtual int Initialize(std::shared_ptr<TITANS::HANDLER::stBaseHandlerContext> pContext);
 
-    virtual void Finalize(struct TITANS::HANDLER::stBaseHandlerContext* pContext);
+    virtual void Finalize(std::shared_ptr<TITANS::HANDLER::stBaseHandlerContext> pContext);
 
-    virtual int HandleProcess(struct TITANS::HANDLER::stBaseHandlerContext* pContext);
+    virtual int HandleProcess(std::shared_ptr<TITANS::HANDLER::stBaseHandlerContext> pContext);
 
 protected:
     unsigned  _port;

@@ -5,9 +5,10 @@ Titans是一个面向后台的rpc开发框架，旨在提高后台逻辑服务�
 ## 特点
 
 ## 目录
-- core， Titans核心部件，提供了Titans核心接口
-- codec，Titans 协议解析器，自定义协议实现标准打包解包接口
-
+- core, Titans核心部件，提供了Titans核心接口
+- test, Titans单元测试
+- example, Titans例子
+- tool, Titans工具
 
 ## 快速开始
 设计协议文件

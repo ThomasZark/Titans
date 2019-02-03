@@ -10,11 +10,11 @@ public:
 
     virtual ~SyncServer();
 
-    virtual int Initialize(struct stBaseSvrContext* pContext);
+    virtual int Initialize(std::shared_ptr<TITANS::SERVER::stBaseSvrContext> pContext);
 
-    virtual void Finalize(struct stBaseSvrContext* pContext);
+    virtual void Finalize(std::shared_ptr<TITANS::SERVER::stBaseSvrContext> pContext);
 
-    virtual int Serve(struct stBaseSvrContext* pContext);
+    virtual int Serve(std::shared_ptr<TITANS::SERVER::stBaseSvrContext> pContext);
 
 
 };
