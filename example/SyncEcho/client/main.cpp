@@ -1,8 +1,8 @@
 #include <iostream>
 #include <core/route/IPRoute.h>
 #include <core/common/Memory.h>
+#include <core/rpc/SyncRpc.h>
 
-#include "EchoRpc.h"
 #include "PlatCodec.h"
 #include "SyncTcpNet.h"
 
@@ -11,9 +11,14 @@ using namespace TITANS::RPC;
 
 std::shared_ptr<BaseRpc> GetEchoRpcProxy() {
 
-        auto it = std::make_shared<EchoRpc>();
-        it->SetNet(std::make_shared<SyncTcpNet>())
-                ->SetRoute(std::shared_ptr<IPRoute>(sIPRoute::Instance(), TITANS::stack_delete<IPRoute>));
+        auto it = std::make_shared<SyncRpc>();
+        auto route = std::make_shared<IPRoute>();
+        auto net = std::make_shared<SyncTcpNet>();
+        route->SetRouteKey("127.0.0.1:1000");
+        net->SetTimeout(1000);
+        it->SetRpcName("SyncEchoRpc")
+                ->SetNet(net)
+                ->SetRoute(route);
         return it;
 }
 
@@ -23,7 +28,9 @@ int main() {
 
         PlatCodec codec;
         std::cin>>codec.BodyReq();
-        int ret = GetEchoRpcProxy()->SetCodec(std::shared_ptr<PlatCodec>(&codec, TITANS::stack_delete<PlatCodec>))->Call();
+        int ret = GetEchoRpcProxy()
+                ->SetCodec(std::shared_ptr<PlatCodec>(&codec, TITANS::stack_delete<PlatCodec>))
+                ->Call();
 
         std::cout<<"ret="<<ret 
                 <<"rsp="<<codec.BodyRsp()

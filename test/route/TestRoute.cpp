@@ -16,22 +16,25 @@ TEST_CASE( "IPRoute", "[Route]" ) {
 
     SECTION( "IPRoute GetRoute" ) {
 
-        std::string key="127.0.0.0:10086";
-        REQUIRE( INS(sIPRoute)->GetRoute(key, route) == ROUTE_SUCC);
+        IPRoute iproute;
+        iproute.SetRouteKey("127.0.0.0:10086");
+        REQUIRE( iproute.GetRoute(route) == ROUTE_SUCC);
         REQUIRE( route.ip == "127.0.0.0");
         REQUIRE( route.port == 10086);
     }
 
     SECTION( "IPRoute GetRoute Key Excption" ) {
 
-        std::string key="127.0.0.0,10086";
-        REQUIRE( INS(sIPRoute)->GetRoute(key, route) == ROUTE_KEY_ERROR);
+        IPRoute iproute;
+        iproute.SetRouteKey("127.0.0.0,10086");
+        REQUIRE( iproute.GetRoute(route) == ROUTE_KEY_ERROR);
     }
 
     SECTION( "IPRoute GetRoute port Exception" ) {
 
-        std::string key="127.0.0.0:";
-        REQUIRE( INS(sIPRoute)->GetRoute(key, route) == ROUTE_SUCC);
+        IPRoute iproute;
+        iproute.SetRouteKey("127.0.0.0:");
+        REQUIRE( iproute.GetRoute(route) == ROUTE_SUCC);
         REQUIRE( route.ip == "127.0.0.0");
         REQUIRE( route.port == 0);
     }

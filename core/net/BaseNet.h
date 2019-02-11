@@ -2,6 +2,7 @@
 #define _TITANS_CORE_NET_BASENET_H_
 
 #include <string>
+#include <sstream>
 #include <functional>
 #include <memory>   
 
@@ -10,7 +11,8 @@ namespace TITANS {
 namespace NET {
 
 enum {
-    NET_SUCC            = 0 ,
+    NET_SUCC            = 0,
+    NET_CONNECT_ERROR   = -50001,
 };
 
 class BaseNet {
@@ -19,7 +21,8 @@ public:
     typedef std::function<int(const char*, const unsigned int, void*)> CheckFunc;
 
 public:
-    BaseNet() {}
+    BaseNet()
+    :_timeout(2000) {}
 
     virtual ~BaseNet() {}
 
@@ -134,7 +137,7 @@ protected:
     std::string _ip;
     //端口号
     unsigned _port;
-    //超时时间
+    //超时时间, 默认2s
     unsigned _timeout;
     //响应包检查函数
     CheckFunc _checkFunc;

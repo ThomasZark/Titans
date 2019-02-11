@@ -156,6 +156,12 @@ protected:
     std::stringstream _ssLog;
 };
 
+#define CHECK_RPC_PARAM(pParam) \
+    if(nullptr == pParam) {    \
+        _ssLog<< #pParam <<" is nullptr"<<std::endl; \
+        return TITANS::RPC::RPC_PARAM_ERROR; \
+    }   \
+
 }//namespace RPC
 
 }//namespace TITANS
