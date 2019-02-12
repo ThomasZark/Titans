@@ -158,7 +158,7 @@ protected:
 
 #define CHECK_RPC_PARAM(pParam) \
     if(nullptr == pParam) {    \
-        _ssLog<< #pParam <<" is nullptr"<<std::endl; \
+        LOG()<< #pParam <<" is nullptr"<<std::endl; \
         return TITANS::RPC::RPC_PARAM_ERROR; \
     }   \
 
