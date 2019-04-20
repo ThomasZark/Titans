@@ -26,9 +26,9 @@ void FormatPath(stEnv_t* env) {
     {
         char line[1024];
         FILE* file=popen("pwd", "r");
-        if (file != NULL)
+        if (file != nullptr)
         {
-            if (fgets(line, 1024, file) != NULL)
+            if (fgets(line, 1024, file) != nullptr)
             {
                 proto_dir = line;
                 proto_dir[proto_dir.length() - 1] = '/';
@@ -47,9 +47,9 @@ void FormatPath(stEnv_t* env) {
     {
         char line[1024];
         FILE* file=popen("pwd", "r");
-        if (file != NULL)
+        if (file != nullptr)
         {
-            if (fgets(line, 1024, file) != NULL)
+            if (fgets(line, 1024, file) != nullptr)
             {
                 target_path = line;
                 target_path[target_path.length() - 1] = '/';

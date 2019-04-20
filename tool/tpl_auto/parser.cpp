@@ -46,9 +46,9 @@ int CheckService(const ServiceDescriptor* pServiceDesc, stEnv_t* env) {
         }
     }
 
-    const EnumDescriptor* pBigCmdEnumDescriptor = NULL;
+    const EnumDescriptor* pBigCmdEnumDescriptor = nullptr;
     pBigCmdEnumDescriptor = env->desc.pFileDescriptor->FindEnumTypeByName("BIG_CMD");
-    if (NULL == pBigCmdEnumDescriptor)
+    if (nullptr == pBigCmdEnumDescriptor)
     {
         cout << RED <<"[ERROR!!!BIG_CMD is none]"<< RESET << endl;
         return -1;
@@ -66,9 +66,9 @@ int CheckService(const ServiceDescriptor* pServiceDesc, stEnv_t* env) {
     }
     env->desc.pBigCmdDesc = pBigCmdEnumDescriptor;
 
-    const EnumDescriptor* pSubCmdEnumDescriptor = NULL;
+    const EnumDescriptor* pSubCmdEnumDescriptor = nullptr;
     pSubCmdEnumDescriptor = env->desc.pFileDescriptor->FindEnumTypeByName("SUB_CMD");
-    if (NULL == pSubCmdEnumDescriptor)
+    if (nullptr == pSubCmdEnumDescriptor)
     {
         cout << RED <<"[ERROR!!!SUB_CMD is none]" << RESET << endl;
         return -1;
@@ -228,11 +228,11 @@ void ParseTestCode(const MethodDescriptor* pMethodDesc, stEnv_t* env)
 {
     bool flag = false;
     const Descriptor* pReqDescriptor = env->desc.pFileDescriptor->FindMessageTypeByName(pMethodDesc->input_type()->name());
-    if (NULL == pReqDescriptor) {
+    if (nullptr == pReqDescriptor) {
         cout << RED<< "Can not find message type" << pMethodDesc->input_type()->full_name() << RESET << endl; 
         const DescriptorPool *pool = env->desc.pFileDescriptor->pool();
         pReqDescriptor = pool->FindMessageTypeByName(pMethodDesc->input_type()->full_name());
-        if (NULL == pReqDescriptor)
+        if (nullptr == pReqDescriptor)
         {
             cout << RED<< "Can not find message type" << pMethodDesc->input_type()->full_name() << RESET << endl;  
             return;
@@ -255,12 +255,12 @@ void ParseTestCode(const MethodDescriptor* pMethodDesc, stEnv_t* env)
 
     flag = false;
     const Descriptor* pRspDescriptor = env->desc.pFileDescriptor->FindMessageTypeByName(pMethodDesc->output_type()->name());
-    if (NULL == pRspDescriptor)
+    if (nullptr == pRspDescriptor)
     {
         cout << RED << "Can not find message type" << pMethodDesc->output_type()->full_name() << RESET << endl; 
         const DescriptorPool *pool = env->desc.pFileDescriptor->pool();
         pRspDescriptor = pool->FindMessageTypeByName(pMethodDesc->output_type()->full_name());
-        if (NULL == pReqDescriptor)
+        if (nullptr == pReqDescriptor)
         {
             cout << RED << "Can not find message type" << pMethodDesc->output_type()->full_name() << RESET << endl; 
             return;
@@ -288,10 +288,10 @@ void ParseMethodInner(const MethodDescriptor* pMethodDesc, TemplateDictionary* d
 
     bool flag = false;
     const Descriptor* pReqDescriptor = env->desc.pFileDescriptor->FindMessageTypeByName(pMethodDesc->input_type()->name());
-    if (NULL == pReqDescriptor) {
+    if (nullptr == pReqDescriptor) {
         const DescriptorPool *pool = env->desc.pFileDescriptor->pool();
         pReqDescriptor = pool->FindMessageTypeByName(pMethodDesc->input_type()->full_name());
-        if (NULL == pReqDescriptor)
+        if (nullptr == pReqDescriptor)
         {
             cout << RED<< "Can not find message type" << pMethodDesc->input_type()->full_name() << RESET << endl; 
             return;
@@ -314,10 +314,10 @@ void ParseMethodInner(const MethodDescriptor* pMethodDesc, TemplateDictionary* d
 
     flag = false;
     const Descriptor* pRspDescriptor = env->desc.pFileDescriptor->FindMessageTypeByName(pMethodDesc->output_type()->name());
-    if (NULL == pRspDescriptor) {
+    if (nullptr == pRspDescriptor) {
         const DescriptorPool *pool = env->desc.pFileDescriptor->pool();
         pRspDescriptor = pool->FindMessageTypeByName(pMethodDesc->output_type()->full_name());
-        if (NULL == pRspDescriptor)
+        if (nullptr == pRspDescriptor)
         {
             cout << RED << "Can not find message type" << pMethodDesc->output_type()->full_name() << RESET << endl; 
             return;
