@@ -19,14 +19,14 @@ int main(int args, char** argv)
 
     DiskSourceTree sourceTree;
     sourceTree.MapPath("", env.arg.proto_dir);
-    Importer importer(&sourceTree, NULL);
+    Importer importer(&sourceTree, nullptr);
 
     cout << GREEN << "[正在自动化构建代码]" << RESET << endl;
     cout << GREEN << "[proto文件名]" << RESET << env.arg.proto_file << endl;
     cout << GREEN << "[proto文件目录]" << RESET << env.arg.proto_dir << endl;
     
     env.desc.pFileDescriptor = importer.Import(env.arg.proto_file);
-    if (NULL == env.desc.pFileDescriptor) {
+    if (nullptr == env.desc.pFileDescriptor) {
         cout << RED << "无法打开proto文件或者proto文件解释错误：请检查proto文件是否存在或者通过protoc调用检查proto文件是否正确!!!\n" << RESET<< endl;
         return -1;
     }   

@@ -1,0 +1,12 @@
+package CoProxySvr;
+
+message CoProxyReq {
+
+    optional int32 appid = 1;//
+    optional string data = 2;//
+}
+
+message CoProxyRsp {
+    optional int32 retcode = 1;//
+    optional string errmsg = 2;//
+}

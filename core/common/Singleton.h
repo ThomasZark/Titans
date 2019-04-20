@@ -35,7 +35,7 @@ template < class T, template<class> class CreatePolicy = CreateNew > class  Sing
 public:
 
     static T* Instance() {
-        if (Instance_ == NULL) {
+        if (Instance_ == nullptr) {
             Instance_ = CreatePolicy<T>::Instance(ProtoInstance_);
         }
 
@@ -47,9 +47,9 @@ public:
     }
 
     static void SetProto(T* proto) {
-        Instance_ = NULL;
+        Instance_ = nullptr;
         ProtoInstance_ = proto;
-        //	Instance_=NULL;
+        //	Instance_=nullptr;
     }
 
     static T*  Instance_;
@@ -62,10 +62,10 @@ private:
 
 
 template <class T, template <class> class CreationPolicy>
-T* Singleton <T, CreationPolicy >::Instance_ = NULL;
+T* Singleton <T, CreationPolicy >::Instance_ = nullptr;
 
 template <class T, template <class> class CreationPolicy>
-T* Singleton <T, CreationPolicy >::ProtoInstance_ = NULL;
+T* Singleton <T, CreationPolicy >::ProtoInstance_ = nullptr;
 
 #define INS(sSinglton) sSinglton::Instance()
 

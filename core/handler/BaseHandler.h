@@ -1,6 +1,8 @@
 #ifndef _TITANS_CORE_HANDLER_BASEHANDLER_H_
 #define _TITANS_CORE_HANDLER_BASEHANDLER_H_
 
+#include <memory>
+
 namespace TITANS {
 
 namespace HANDLER {
@@ -23,7 +25,7 @@ public:
     //  pContext    - 初始化参数
     //@return
     //  int     - 0 成功
-    virtual int Initialize(struct stBaseHandlerContext* pContext) { 
+    virtual int Initialize(std::shared_ptr<struct stBaseHandlerContext> pContext) { 
         return 0; 
     }
 
@@ -31,7 +33,7 @@ public:
     //@param
     //  pContext    - 初始化参数
     //@return
-    virtual void Finalize(struct stBaseHandlerContext* pContext) { 
+    virtual void Finalize(std::shared_ptr<struct stBaseHandlerContext> pContext) { 
         return; 
     }
 
@@ -39,7 +41,7 @@ public:
     //@param
     //  pContext    - 初始化参数
     //@return
-    virtual int HandleInput(struct stBaseHandlerContext* pContext) { 
+    virtual int HandleInput(std::shared_ptr<struct stBaseHandlerContext> pContext) { 
         return 0;
     }
 
@@ -47,7 +49,7 @@ public:
     //@param
     //  pContext    - 初始化参数
     //@return
-    virtual int HandleProcess(struct stBaseHandlerContext* pContext) {
+    virtual int HandleProcess(std::shared_ptr<struct stBaseHandlerContext> pContext) {
         return 0;
     };
 };
