@@ -1,0 +1,16 @@
+package StreamCountSvr;
+
+message CountReq {
+
+    optional int32 appid = 1;//
+}
+
+message CountRsp {
+    optional int32 retcode = 1;//
+    optional uint32 count = 2;//
+}
+
+service StreamCountSvr {
+
+    rpc Count(Stream CountReq) returns (CountRsp);//
+}

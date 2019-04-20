@@ -127,6 +127,14 @@ public:
         return 0;
     }
 
+    //@desc - rpc完成
+    //@param
+    //@return
+    //  int     - 0 成功
+    virtual int Complete() {
+        return 0;
+    }
+
     //@desc - 获取日志信息
     //@param
     //@return

@@ -13,6 +13,7 @@ enum {
     REQ_PKG_DECODE_ERROR    = -10002,
     RSP_PKG_ENCODE_ERROR    = -10003,
     RSP_PKG_DECODE_ERROR    = -10004,
+    REQ_PKG_ENCODE_EMPTY    = -10005,
 };
 
 class BaseCodec {

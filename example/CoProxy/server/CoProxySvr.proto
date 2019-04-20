@@ -10,3 +10,8 @@ message CoProxyRsp {
     optional int32 retcode = 1;//
     optional string errmsg = 2;//
 }
+
+service CoProxySvr {
+
+    rpc CoProxy (CoProxyReq) returns (CoProxyRsp);//
+}
